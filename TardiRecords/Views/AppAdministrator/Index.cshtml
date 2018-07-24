@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Master Administrator</h2><br /><br />
+<div ng-controller="IndexController">
+    {{helloWorld}}
+    <div class="text-center">
+
+        <div class="etObjectsInline adminDivPaddingsIndex">
+            <button type="button" class="btn adminDashboardButtons" id="btnEmailTemplates">
+                <span><i class="fa fa-5x fa-clipboard masterColorTextRed"></i> </span>
+                <br /><br />
+                <h2 class="masterColorTextRed"><b>Types</b></h2>
+            </button>
+        </div>
+        <div class="etObjectsInline adminDivPaddingsIndex">
+            <button type="button" class="btn adminDashboardButtons" id="btnAllUsers">
+                <span><i class="fa fa-5x fa-users masterColorTextRed"></i> </span>
+                <br /><br />
+                <h2 class="masterColorTextRed"><b>Users</b></h2>
+            </button>
+        </div>
+        <div class="etObjectsInline adminDivPaddingsIndex">
+            <button type="button" class="btn adminDashboardButtons" id="btnAppDateCutoff">
+                <span><i class="fa fa-5x fa-cogs masterColorTextRed"></i> </span>
+                <br /><br />
+                <h2 class="masterColorTextRed"><b>Machines</b></h2>
+            </button>
+        </div>
+        <!--
+        <div class="etObjectsInline adminDivPaddingsIndex">
+            <button type="button" class="btn adminDashboardButtons" id="btnAppReview">
+                <span><i class="fa fa-5x fa-edit masterColorTextRed"></i> </span>
+                <br /><br />
+                <h2 class="masterColorTextRed"><b>Application<br />Review</b></h2>
+            </button>
+        </div>-->
+    </div>
+</div>

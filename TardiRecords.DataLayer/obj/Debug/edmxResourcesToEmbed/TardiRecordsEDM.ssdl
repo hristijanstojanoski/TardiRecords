@@ -1,0 +1,664 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TardiRecordsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="__MigrationHistory">
+    <Key>
+      <PropertyRef Name="MigrationId" />
+      <PropertyRef Name="ContextKey" />
+    </Key>
+    <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+    <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+    <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AllowedTypesForUser">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="recordTypeId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="userId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="createdBy" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="createdDate" Type="datetime" Nullable="false" />
+    <Property Name="modifyBy" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="modifyDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AspNetRoles">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AspNetUserClaims">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="ClaimType" Type="nvarchar(max)" />
+    <Property Name="ClaimValue" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="AspNetUserLogins">
+    <Key>
+      <PropertyRef Name="LoginProvider" />
+      <PropertyRef Name="ProviderKey" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AspNetUserRoles">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AspNetUsers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="256" />
+    <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+    <Property Name="PasswordHash" Type="nvarchar(max)" />
+    <Property Name="SecurityStamp" Type="nvarchar(max)" />
+    <Property Name="PhoneNumber" Type="nvarchar(max)" />
+    <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+    <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+    <Property Name="LockoutEndDateUtc" Type="datetime" />
+    <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+    <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+  </EntityType>
+  <EntityType Name="BackupLocations">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="machineId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="dbId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="createdBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="createdDate" Type="datetime" Nullable="false" />
+    <Property Name="modifyBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="modifyDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DBs">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="recordListId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="isBackup" Type="bit" Nullable="false" />
+    <Property Name="isArchived" Type="bit" Nullable="false" />
+    <Property Name="phisicalPath" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="sqlType" Type="int" Nullable="false" />
+    <Property Name="sqlVersion" Type="int" Nullable="false" />
+    <Property Name="createdBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="createdDate" Type="datetime" Nullable="false" />
+    <Property Name="modifyBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="modifyDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Files">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="fullName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="path" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="createdBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="createdDate" Type="datetime" Nullable="false" />
+    <Property Name="modifyBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="modifyDate" Type="datetime" Nullable="false" />
+    <Property Name="recordsListId" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Machine">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="UID" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="purpose" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="isBroken" Type="bit" Nullable="false" />
+    <Property Name="purchaseDate" Type="datetime" Nullable="false" />
+    <Property Name="officeLocation" Type="int" />
+    <Property Name="subType" Type="int" />
+    <Property Name="createdBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="createdDate" Type="datetime" Nullable="false" />
+    <Property Name="modifyBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="modifyDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MachinesInUse">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="machineId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="userid" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="dateFrom" Type="datetime" Nullable="false" />
+    <Property Name="dateTo" Type="datetime" />
+    <Property Name="notes" Type="nvarchar" MaxLength="500" />
+    <Property Name="createdBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="createdDate" Type="datetime" Nullable="false" />
+    <Property Name="modifyBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="modifyDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Notes">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="noteText" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="isAlert" Type="bit" Nullable="false" />
+    <Property Name="createdBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="createdDate" Type="datetime" Nullable="false" />
+    <Property Name="modifyBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="modifyDate" Type="datetime" Nullable="false" />
+    <Property Name="recordListId" Type="uniqueidentifier" />
+    <Property Name="machineId" Type="uniqueidentifier" />
+  </EntityType>
+  <EntityType Name="RecordList">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="title" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="createdBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="createdDate" Type="datetime" Nullable="false" />
+    <Property Name="modifyBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="modifyDate" Type="datetime" Nullable="false" />
+    <Property Name="recordTypeId" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RecordType">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="subType" Type="int" Nullable="false" />
+    <Property Name="isEnabled" Type="bit" Nullable="false" />
+    <Property Name="isDeleted" Type="bit" Nullable="false" />
+    <Property Name="createdBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="createdDate" Type="datetime" Nullable="false" />
+    <Property Name="modifiedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="modifyDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_AllowedTypesForUser_RecordType">
+    <End Role="RecordType" Type="Self.RecordType" Multiplicity="1" />
+    <End Role="AllowedTypesForUser" Type="Self.AllowedTypesForUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RecordType">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="AllowedTypesForUser">
+        <PropertyRef Name="recordTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BackupLocations_AspNetUsers_CreatedBy">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="BackupLocations" Type="Self.BackupLocations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="BackupLocations">
+        <PropertyRef Name="createdBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BackupLocations_AspNetUsers_ModifyBy">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="BackupLocations" Type="Self.BackupLocations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="BackupLocations">
+        <PropertyRef Name="modifyBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BackupLocations_DBs">
+    <End Role="DBs" Type="Self.DBs" Multiplicity="1" />
+    <End Role="BackupLocations" Type="Self.BackupLocations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DBs">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="BackupLocations">
+        <PropertyRef Name="dbId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BackupLocations_Machine">
+    <End Role="Machine" Type="Self.Machine" Multiplicity="1" />
+    <End Role="BackupLocations" Type="Self.BackupLocations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Machine">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="BackupLocations">
+        <PropertyRef Name="machineId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserClaims">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserLogins">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+    <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetRoles">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserRoles">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserRoles">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DBs_AspNetUsers_CreatedBy">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="DBs" Type="Self.DBs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DBs">
+        <PropertyRef Name="createdBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DBs_AspNetUsers_ModifyBy">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="DBs" Type="Self.DBs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DBs">
+        <PropertyRef Name="modifyBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Files_AspNetUsers_CreatedBy">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="Files" Type="Self.Files" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Files">
+        <PropertyRef Name="createdBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Files_AspNetUsers_ModifyBy">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="Files" Type="Self.Files" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Files">
+        <PropertyRef Name="modifyBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Files_RecordList">
+    <End Role="RecordList" Type="Self.RecordList" Multiplicity="1" />
+    <End Role="Files" Type="Self.Files" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RecordList">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Files">
+        <PropertyRef Name="recordsListId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Machine_AspNetUsers_CreatedBy">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="Machine" Type="Self.Machine" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Machine">
+        <PropertyRef Name="createdBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Machine_AspNetUsers_ModifyBy">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="Machine" Type="Self.Machine" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Machine">
+        <PropertyRef Name="modifyBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MachinesInUse_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="MachinesInUse" Type="Self.MachinesInUse" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MachinesInUse">
+        <PropertyRef Name="userid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MachinesInUse_AspNetUsers_CreatedBy">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="MachinesInUse" Type="Self.MachinesInUse" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MachinesInUse">
+        <PropertyRef Name="createdBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MachinesInUse_AspNetUsers_ModifyBy">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="MachinesInUse" Type="Self.MachinesInUse" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MachinesInUse">
+        <PropertyRef Name="modifyBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MachinesInUse_Machine">
+    <End Role="Machine" Type="Self.Machine" Multiplicity="1" />
+    <End Role="MachinesInUse" Type="Self.MachinesInUse" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Machine">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="MachinesInUse">
+        <PropertyRef Name="machineId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Notes_AspNetUsers_CreatedBy">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="Notes" Type="Self.Notes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Notes">
+        <PropertyRef Name="createdBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Notes_AspNetUsers_ModifyBy">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="Notes" Type="Self.Notes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Notes">
+        <PropertyRef Name="modifyBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Notes_Machine">
+    <End Role="Machine" Type="Self.Machine" Multiplicity="0..1" />
+    <End Role="Notes" Type="Self.Notes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Machine">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Notes">
+        <PropertyRef Name="machineId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Notes_RecordList">
+    <End Role="RecordList" Type="Self.RecordList" Multiplicity="0..1" />
+    <End Role="Notes" Type="Self.Notes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RecordList">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Notes">
+        <PropertyRef Name="recordListId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RecordList_AspNetUsers_CreatedBy">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="RecordList" Type="Self.RecordList" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RecordList">
+        <PropertyRef Name="createdBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RecordList_AspNetUsers_ModifyBy">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="RecordList" Type="Self.RecordList" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RecordList">
+        <PropertyRef Name="modifyBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RecordType_AspNetUsers_CreatedBy">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="RecordType" Type="Self.RecordType" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RecordType">
+        <PropertyRef Name="createdBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RecordType_AspNetUsers_ModifiedBy">
+    <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+    <End Role="RecordType" Type="Self.RecordType" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RecordType">
+        <PropertyRef Name="modifiedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TardiRecordsModelStoreContainer">
+    <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AllowedTypesForUser" EntityType="Self.AllowedTypesForUser" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BackupLocations" EntityType="Self.BackupLocations" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DBs" EntityType="Self.DBs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Files" EntityType="Self.Files" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Machine" EntityType="Self.Machine" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MachinesInUse" EntityType="Self.MachinesInUse" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Notes" EntityType="Self.Notes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RecordList" EntityType="Self.RecordList" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RecordType" EntityType="Self.RecordType" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_AllowedTypesForUser_RecordType" Association="Self.FK_AllowedTypesForUser_RecordType">
+      <End Role="RecordType" EntitySet="RecordType" />
+      <End Role="AllowedTypesForUser" EntitySet="AllowedTypesForUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BackupLocations_AspNetUsers_CreatedBy" Association="Self.FK_BackupLocations_AspNetUsers_CreatedBy">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="BackupLocations" EntitySet="BackupLocations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BackupLocations_AspNetUsers_ModifyBy" Association="Self.FK_BackupLocations_AspNetUsers_ModifyBy">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="BackupLocations" EntitySet="BackupLocations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BackupLocations_DBs" Association="Self.FK_BackupLocations_DBs">
+      <End Role="DBs" EntitySet="DBs" />
+      <End Role="BackupLocations" EntitySet="BackupLocations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BackupLocations_Machine" Association="Self.FK_BackupLocations_Machine">
+      <End Role="Machine" EntitySet="Machine" />
+      <End Role="BackupLocations" EntitySet="BackupLocations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+      <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+      <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DBs_AspNetUsers_CreatedBy" Association="Self.FK_DBs_AspNetUsers_CreatedBy">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="DBs" EntitySet="DBs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DBs_AspNetUsers_ModifyBy" Association="Self.FK_DBs_AspNetUsers_ModifyBy">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="DBs" EntitySet="DBs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Files_AspNetUsers_CreatedBy" Association="Self.FK_Files_AspNetUsers_CreatedBy">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="Files" EntitySet="Files" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Files_AspNetUsers_ModifyBy" Association="Self.FK_Files_AspNetUsers_ModifyBy">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="Files" EntitySet="Files" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Files_RecordList" Association="Self.FK_Files_RecordList">
+      <End Role="RecordList" EntitySet="RecordList" />
+      <End Role="Files" EntitySet="Files" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Machine_AspNetUsers_CreatedBy" Association="Self.FK_Machine_AspNetUsers_CreatedBy">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="Machine" EntitySet="Machine" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Machine_AspNetUsers_ModifyBy" Association="Self.FK_Machine_AspNetUsers_ModifyBy">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="Machine" EntitySet="Machine" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MachinesInUse_AspNetUsers" Association="Self.FK_MachinesInUse_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="MachinesInUse" EntitySet="MachinesInUse" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MachinesInUse_AspNetUsers_CreatedBy" Association="Self.FK_MachinesInUse_AspNetUsers_CreatedBy">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="MachinesInUse" EntitySet="MachinesInUse" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MachinesInUse_AspNetUsers_ModifyBy" Association="Self.FK_MachinesInUse_AspNetUsers_ModifyBy">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="MachinesInUse" EntitySet="MachinesInUse" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MachinesInUse_Machine" Association="Self.FK_MachinesInUse_Machine">
+      <End Role="Machine" EntitySet="Machine" />
+      <End Role="MachinesInUse" EntitySet="MachinesInUse" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Notes_AspNetUsers_CreatedBy" Association="Self.FK_Notes_AspNetUsers_CreatedBy">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="Notes" EntitySet="Notes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Notes_AspNetUsers_ModifyBy" Association="Self.FK_Notes_AspNetUsers_ModifyBy">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="Notes" EntitySet="Notes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Notes_Machine" Association="Self.FK_Notes_Machine">
+      <End Role="Machine" EntitySet="Machine" />
+      <End Role="Notes" EntitySet="Notes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Notes_RecordList" Association="Self.FK_Notes_RecordList">
+      <End Role="RecordList" EntitySet="RecordList" />
+      <End Role="Notes" EntitySet="Notes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RecordList_AspNetUsers_CreatedBy" Association="Self.FK_RecordList_AspNetUsers_CreatedBy">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="RecordList" EntitySet="RecordList" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RecordList_AspNetUsers_ModifyBy" Association="Self.FK_RecordList_AspNetUsers_ModifyBy">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="RecordList" EntitySet="RecordList" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RecordType_AspNetUsers_CreatedBy" Association="Self.FK_RecordType_AspNetUsers_CreatedBy">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="RecordType" EntitySet="RecordType" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RecordType_AspNetUsers_ModifiedBy" Association="Self.FK_RecordType_AspNetUsers_ModifiedBy">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="RecordType" EntitySet="RecordType" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,25 @@
+﻿body {
+    width: 1440px;
+    margin: auto !important;
+    background-color: #f2f2f2;
+    color: #D52B1E;
+    font-family: 'Fira Sans', sans-serif !important;
+}
+
+.headerMasterPage {
+    height: 250px !important;
+    padding-top: 5px;
+    padding-bottom: 3px;
+    font-size:40px;
+}
+.objectsInlineMasterPage {
+    display: inline !important;
+}
+
+.fs30MasterPage {
+    font-size: 30px;
+}
+
+.userDataMasterPage {
+font-size:18px;
+}

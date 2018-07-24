@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="304904ec849c423d86fc85ed3847df0b" Name="Diagram1">
+        <EntityTypeShape EntityType="TardiRecordsModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TardiRecordsModel.AllowedTypesForUser" Width="1.5" PointX="7.5" PointY="35.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TardiRecordsModel.AspNetRoles" Width="1.5" PointX="0.75" PointY="18.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TardiRecordsModel.AspNetUserClaims" Width="1.5" PointX="5.25" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TardiRecordsModel.AspNetUserLogins" Width="1.5" PointX="5.25" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TardiRecordsModel.AspNetUsers" Width="1.5" PointX="3" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TardiRecordsModel.BackupLocations" Width="1.5" PointX="7.5" PointY="21.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TardiRecordsModel.DBs" Width="1.5" PointX="5.25" PointY="17.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TardiRecordsModel.Files" Width="1.5" PointX="7.5" PointY="25.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TardiRecordsModel.Machine" Width="1.5" PointX="5.25" PointY="25.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TardiRecordsModel.MachinesInUse" Width="1.5" PointX="10.5" PointY="21.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TardiRecordsModel.Notes" Width="1.5" PointX="10.5" PointY="26.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TardiRecordsModel.RecordList" Width="1.5" PointX="5.25" PointY="31" IsExpanded="true" />
+        <EntityTypeShape EntityType="TardiRecordsModel.RecordType" Width="1.5" PointX="5.25" PointY="35" IsExpanded="true" />
+        <AssociationConnector Association="TardiRecordsModel.FK_AllowedTypesForUser_RecordType" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_BackupLocations_AspNetUsers_CreatedBy" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_BackupLocations_AspNetUsers_ModifyBy" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_DBs_AspNetUsers_CreatedBy" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_DBs_AspNetUsers_ModifyBy" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_Files_AspNetUsers_CreatedBy" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_Files_AspNetUsers_ModifyBy" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_Machine_AspNetUsers_CreatedBy" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_Machine_AspNetUsers_ModifyBy" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_MachinesInUse_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_MachinesInUse_AspNetUsers_CreatedBy" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_MachinesInUse_AspNetUsers_ModifyBy" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_Notes_AspNetUsers_CreatedBy" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_Notes_AspNetUsers_ModifyBy" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_RecordList_AspNetUsers_CreatedBy" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_RecordList_AspNetUsers_ModifyBy" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_RecordType_AspNetUsers_CreatedBy" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_RecordType_AspNetUsers_ModifiedBy" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_BackupLocations_DBs" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_BackupLocations_Machine" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_Files_RecordList" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_MachinesInUse_Machine" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_Notes_Machine" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.FK_Notes_RecordList" ManuallyRouted="false" />
+        <AssociationConnector Association="TardiRecordsModel.AspNetUserRoles" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

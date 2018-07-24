@@ -1,0 +1,11 @@
+C:\HristijanFiles\dev\TardiRecords\TardiRecords.DataLayer\bin\Debug\TardiRecords.DataLayer.dll.config
+C:\HristijanFiles\dev\TardiRecords\TardiRecords.DataLayer\bin\Debug\TardiRecords.DataLayer.dll
+C:\HristijanFiles\dev\TardiRecords\TardiRecords.DataLayer\bin\Debug\TardiRecords.DataLayer.pdb
+C:\HristijanFiles\dev\TardiRecords\TardiRecords.DataLayer\bin\Debug\EntityFramework.dll
+C:\HristijanFiles\dev\TardiRecords\TardiRecords.DataLayer\bin\Debug\EntityFramework.SqlServer.dll
+C:\HristijanFiles\dev\TardiRecords\TardiRecords.DataLayer\bin\Debug\EntityFramework.xml
+C:\HristijanFiles\dev\TardiRecords\TardiRecords.DataLayer\bin\Debug\EntityFramework.SqlServer.xml
+C:\HristijanFiles\dev\TardiRecords\TardiRecords.DataLayer\obj\Debug\TardiRecords.DataLayer.csprojResolveAssemblyReference.cache
+C:\HristijanFiles\dev\TardiRecords\TardiRecords.DataLayer\obj\Debug\TardiRecords.DataLayer.csproj.CoreCompileInputs.cache
+C:\HristijanFiles\dev\TardiRecords\TardiRecords.DataLayer\obj\Debug\TardiRecords.DataLayer.dll
+C:\HristijanFiles\dev\TardiRecords\TardiRecords.DataLayer\obj\Debug\TardiRecords.DataLayer.pdb

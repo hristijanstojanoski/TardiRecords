@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@if (User.Identity.IsAuthenticated)
+{ }
+ else
+{
+<script>
+    window.location='/Account/Login'
+</script>
+}

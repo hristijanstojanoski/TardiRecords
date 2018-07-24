@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Tardigrade</title>
+    
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")   
+    @Scripts.Render("~/bundles/angular")
+    <script src="~/AngularScripts/AppAdministrator/Index.js"></script>
+    <link href="~/Content/CustomCSS/MasterPage.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
+</head>
+<body>
+    <div class="headerMasterPage">
+        <table>
+            <tr>
+                <td>
+                    <img src="~/Images/tardi-logo-shield.png" />
+                </td>
+                <td>
+                    <p>
+                        <b>Tardigrade</b>&nbsp;&nbsp;&nbsp;<span class="fs30MasterPage"><i>Internal Applications</i></span>
+                    </p>
+                </td>
+            </tr>
+        </table>
+        <div class="userDataMasterPage">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <p class="text-right masterColorTextRed">@User.Identity.Name, @Html.ActionLink("Logout", "LogOff", "Account")</p>                
+            }
+        </div>
+        
+    </div>
+    
+    <div ng-app="TardiRecordsApp">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p class="text-center">&copy; @DateTime.Now.Year - Tardigrade</p>
+        </footer>
+    </div>
+
+  <!--  @Scripts.Render("~/bundles/bootstrap")-->
+    @RenderSection("scripts", required: false)
+</body>
+</html>

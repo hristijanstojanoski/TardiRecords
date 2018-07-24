@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TardiRecordsModelStoreContainer" CdmEntityContainer="TardiRecordsEntities">
+    <EntitySetMapping Name="C__MigrationHistory">
+      <EntityTypeMapping TypeName="TardiRecordsModel.C__MigrationHistory">
+        <MappingFragment StoreEntitySet="__MigrationHistory">
+          <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+          <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+          <ScalarProperty Name="Model" ColumnName="Model" />
+          <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AllowedTypesForUser">
+      <EntityTypeMapping TypeName="TardiRecordsModel.AllowedTypesForUser">
+        <MappingFragment StoreEntitySet="AllowedTypesForUser">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="recordTypeId" ColumnName="recordTypeId" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+          <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+          <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
+          <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetRoles">
+      <EntityTypeMapping TypeName="TardiRecordsModel.AspNetRoles">
+        <MappingFragment StoreEntitySet="AspNetRoles">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetUserClaims">
+      <EntityTypeMapping TypeName="TardiRecordsModel.AspNetUserClaims">
+        <MappingFragment StoreEntitySet="AspNetUserClaims">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+          <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetUserLogins">
+      <EntityTypeMapping TypeName="TardiRecordsModel.AspNetUserLogins">
+        <MappingFragment StoreEntitySet="AspNetUserLogins">
+          <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+          <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetUsers">
+      <EntityTypeMapping TypeName="TardiRecordsModel.AspNetUsers">
+        <MappingFragment StoreEntitySet="AspNetUsers">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+          <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+          <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+          <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+          <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+          <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="BackupLocations">
+      <EntityTypeMapping TypeName="TardiRecordsModel.BackupLocations">
+        <MappingFragment StoreEntitySet="BackupLocations">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="machineId" ColumnName="machineId" />
+          <ScalarProperty Name="dbId" ColumnName="dbId" />
+          <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+          <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+          <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
+          <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DBs">
+      <EntityTypeMapping TypeName="TardiRecordsModel.DBs">
+        <MappingFragment StoreEntitySet="DBs">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="recordListId" ColumnName="recordListId" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="isBackup" ColumnName="isBackup" />
+          <ScalarProperty Name="isArchived" ColumnName="isArchived" />
+          <ScalarProperty Name="phisicalPath" ColumnName="phisicalPath" />
+          <ScalarProperty Name="sqlType" ColumnName="sqlType" />
+          <ScalarProperty Name="sqlVersion" ColumnName="sqlVersion" />
+          <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+          <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+          <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
+          <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Files">
+      <EntityTypeMapping TypeName="TardiRecordsModel.Files">
+        <MappingFragment StoreEntitySet="Files">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="fullName" ColumnName="fullName" />
+          <ScalarProperty Name="path" ColumnName="path" />
+          <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+          <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+          <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
+          <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+          <ScalarProperty Name="recordsListId" ColumnName="recordsListId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Machine">
+      <EntityTypeMapping TypeName="TardiRecordsModel.Machine">
+        <MappingFragment StoreEntitySet="Machine">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="UID" ColumnName="UID" />
+          <ScalarProperty Name="purpose" ColumnName="purpose" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="isBroken" ColumnName="isBroken" />
+          <ScalarProperty Name="purchaseDate" ColumnName="purchaseDate" />
+          <ScalarProperty Name="officeLocation" ColumnName="officeLocation" />
+          <ScalarProperty Name="subType" ColumnName="subType" />
+          <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+          <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+          <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
+          <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MachinesInUse">
+      <EntityTypeMapping TypeName="TardiRecordsModel.MachinesInUse">
+        <MappingFragment StoreEntitySet="MachinesInUse">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="machineId" ColumnName="machineId" />
+          <ScalarProperty Name="userid" ColumnName="userid" />
+          <ScalarProperty Name="dateFrom" ColumnName="dateFrom" />
+          <ScalarProperty Name="dateTo" ColumnName="dateTo" />
+          <ScalarProperty Name="notes" ColumnName="notes" />
+          <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+          <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+          <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
+          <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Notes">
+      <EntityTypeMapping TypeName="TardiRecordsModel.Notes">
+        <MappingFragment StoreEntitySet="Notes">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="noteText" ColumnName="noteText" />
+          <ScalarProperty Name="isAlert" ColumnName="isAlert" />
+          <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+          <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+          <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
+          <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+          <ScalarProperty Name="recordListId" ColumnName="recordListId" />
+          <ScalarProperty Name="machineId" ColumnName="machineId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RecordList">
+      <EntityTypeMapping TypeName="TardiRecordsModel.RecordList">
+        <MappingFragment StoreEntitySet="RecordList">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+          <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+          <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
+          <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+          <ScalarProperty Name="recordTypeId" ColumnName="recordTypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RecordType">
+      <EntityTypeMapping TypeName="TardiRecordsModel.RecordType">
+        <MappingFragment StoreEntitySet="RecordType">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="subType" ColumnName="subType" />
+          <ScalarProperty Name="isEnabled" ColumnName="isEnabled" />
+          <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+          <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+          <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+          <ScalarProperty Name="modifiedBy" ColumnName="modifiedBy" />
+          <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="AspNetUserRoles" TypeName="TardiRecordsModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+      <EndProperty Name="AspNetRoles">
+        <ScalarProperty Name="Id" ColumnName="RoleId" />
+      </EndProperty>
+      <EndProperty Name="AspNetUsers">
+        <ScalarProperty Name="Id" ColumnName="UserId" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>
