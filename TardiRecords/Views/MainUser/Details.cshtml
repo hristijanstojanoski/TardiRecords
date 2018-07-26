@@ -1,0 +1,694 @@
+﻿
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="dDashboardBoxesPaddingTB">
+    <div class="masterColorBackgroundGray dDashboardBoxesPaddingTB dDashboardBoxesXPaddingLR dDashboardAppDetails">
+        <h1>
+            <b>Europcar</b>
+        </h1>
+    </div>
+</div>
+
+<br />
+
+<br />
+<div class="dSelectionCriteriaObjectBox" id="dEligQ1">
+    <div class="dSelectionCriteriaObjectHeader" ng-click="appEligQ1Visibility=!appEligQ1Visibility">
+        Files
+        <div class="etObjectsInline float-right">
+            <span>
+                <i class="fa fa-plus" ng-show="!appEligQ1Visibility"></i>
+                <i class="fa fa-minus" ng-show="appEligQ1Visibility"></i>
+            </span>
+        </div>
+    </div>
+    <div class="dSelectionCriteriaQuestion" ng-show="appEligQ1Visibility">
+        <b>
+            Please provide evidence of your citizenship, permanent residency, or visa status with certified
+            copies of the required documents as below. Passports should be certified on the page that shows
+            your photograph and your personal information. Applications without this evidence will not be
+            considered for selection.
+        </b>
+        <div class="dSelectionCriteriaSubQuestion">
+            <div ng-show="AETQ1IM.InputModel.isAnswerYes">
+
+            </div>
+            <div ng-show="!AETQ1IM.InputModel.isAnswerYes">
+
+            </div>
+            <div class="dSelectionCriteriaSubQuestion">
+                <div>
+                    <br />
+                    <p>
+                        <b>Are you an Australian/New Zealand citizen, or Permanent Resident (PR)?</b>
+                    </p>
+                    <div class="etNestedObject">
+                        <input type="radio" ng-disabled="isApplicationSubmitted" name="ANZCYNchoice" ng-click="AETQ1IM.InputModel.isAnswerYes=!AETQ1IM.InputModel.isAnswerYes" ng-checked="AETQ1IM.InputModel.isAnswerYes"><span class="masterRadioButtonPadding">Yes</span>
+                        <br />
+                        <input type="radio" ng-disabled="isApplicationSubmitted" name="ANZCYNchoice" ng-click="AETQ1IM.InputModel.isAnswerYes=!AETQ1IM.InputModel.isAnswerYes" ng-checked="!AETQ1IM.InputModel.isAnswerYes"><span class="masterRadioButtonPadding">No</span>
+                        <br />
+                        <br />
+
+                    </div>
+                    <div class="dDivUploadDocuments" ng-show="AETQ1IM.InputModel.isAnswerYes">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <p class="masterColorTextLightNavy"><b>Citizens:</b></p>
+                                        <ul class="masterColorTextLightNavy">
+                                            <li>Valid passport, and</li>
+                                            <li>
+                                                Australian or New Zealand Certificate of Citizenship (if
+                                                applicable)
+                                            </li>
+                                        </ul>
+                                        <p class="masterColorTextLightNavy"><b>Permanent Residents:</b></p>
+                                        <ul class="masterColorTextLightNavy">
+                                            <li>Valid passport, and</li>
+                                            <li>
+                                                Evidence of Australian or New Zealand permanent residency
+                                                status
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td valign="top">
+                                    <div>
+                                        <form name="birthCertFileUpload">
+                                            <div ng-hide="AETQ1IM.InputModel.File.Id==0">
+                                                <!--"-->
+                                                <span class="masterColorTextLightNavy">
+                                                    {{AETQ1IM.InputModel.File.Name}}&nbsp;
+                                                    <a class="fa fa-download masterColorTextRed" ng-hide="isApplicationSubmitted" ng-href="/Attachment/DownloadAttachment?url={{AETQ1IM.InputModel.File.Url}}"></a>&nbsp;&nbsp;&nbsp;
+                                                    <i class="fa fa-trash-o masterColorTextRed" ng-hide="isApplicationSubmitted" ng-click="deleteFileOnClick(AETQ1IM.InputModel.File.Id,1)"></i>
+                                                </span>
+                                            </div>
+                                            <p ng-hide="AETQ1IM.InputModel.File.Id!=0" class="masterColorTextLightNavy">
+                                                <b>No items to display</b>
+                                            </p>
+                                            <div ng-hide="AETQ1IM.InputModel.File.Id!=0">
+                                                <!---->
+                                                <input type="file" ng-disabled="isApplicationSubmitted" nv-file-select="" uploader="birthCertELPR" multiple />
+                                                <br /><span class="masterColorTextLightNavy dSmallFont"><i>Supporting documents must be single PDF file no larger than 5MB.</i></span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br />
+                </div>
+                <div ng-show="!AETQ1IM.InputModel.isAnswerYes">
+                    <br />
+                    <div class="dDivUploadDocuments" ng-show="!AETQ1IM.InputModel.isAnswerYes">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div style="margin-right:15px;">
+                                        <p class="masterColorTextLightNavy"><b>Visa holders:</b></p>
+                                        <ul class="masterColorTextLightNavy">
+                                            <li>Valid passport, and</li>
+                                            <li>Current visa or in-progress visa application</li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td valign="top">
+                                    <div>
+                                        <form name="visaFileUpload">
+                                            <div ng-hide="AETQ2IM.InputModel.File.Id==0">
+
+                                                <span class="masterColorTextLightNavy">
+                                                    {{AETQ2IM.InputModel.File.Name}}&nbsp;
+                                                    <a class="fa fa-download masterColorTextRed" ng-hide="isApplicationSubmitted" ng-href="/Attachment/DownloadAttachment?url={{AETQ2IM.InputModel.File.Url}}"></a>&nbsp;&nbsp;&nbsp;
+                                                    <i class="fa fa-trash-o masterColorTextRed" ng-hide="isApplicationSubmitted" ng-click="deleteFileOnClick(AETQ2IM.InputModel.File.Id,2)"></i>
+                                                </span>
+                                            </div>
+                                            <p ng-hide="AETQ2IM.InputModel.File.Id!=0" class="masterColorTextLightNavy">
+                                                <b>No items to display</b>
+                                            </p>
+                                            <div ng-hide="AETQ2IM.InputModel.File.Id!=0">
+
+                                                <input type="file" ng-disabled="isApplicationSubmitted" nv-file-select="" uploader="visaDocumentELVS" multiple />
+                                                <br /><span class="masterColorTextLightNavy dSmallFont"><i>Supporting documents must be single PDF file no larger than 5MB.</i></span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<br />
+
+<div class="dSelectionCriteriaObjectBox" id="dEligQ2">
+    <div class="dSelectionCriteriaObjectHeader" ng-click="appEligQ2Visibility=!appEligQ2Visibility">
+        Notes
+        <div class="etObjectsInline float-right">
+            <span>
+                <i class="fa fa-plus" ng-show="!appEligQ2Visibility"></i>
+                <i class="fa fa-minus" ng-show="appEligQ2Visibility"></i>
+            </span>
+        </div>
+    </div>
+    <div class="dSelectionCriteriaQuestion" ng-show="appEligQ2Visibility">
+        <b>
+            Please provide evidence of your citizenship, permanent residency, or visa status with certified
+            copies of the required documents as below. Passports should be certified on the page that shows
+            your photograph and your personal information. Applications without this evidence will not be
+            considered for selection.
+        </b>
+        <div class="dSelectionCriteriaSubQuestion">
+            <div ng-show="AETQ1IM.InputModel.isAnswerYes">
+
+            </div>
+            <div ng-show="!AETQ1IM.InputModel.isAnswerYes">
+
+            </div>
+            <div class="dSelectionCriteriaSubQuestion">
+                <div>
+                    <br />
+                    <p>
+                        <b>Are you an Australian/New Zealand citizen, or Permanent Resident (PR)?</b>
+                    </p>
+                    <div class="etNestedObject">
+                        <input type="radio" ng-disabled="isApplicationSubmitted" name="ANZCYNchoice" ng-click="AETQ1IM.InputModel.isAnswerYes=!AETQ1IM.InputModel.isAnswerYes" ng-checked="AETQ1IM.InputModel.isAnswerYes"><span class="masterRadioButtonPadding">Yes</span>
+                        <br />
+                        <input type="radio" ng-disabled="isApplicationSubmitted" name="ANZCYNchoice" ng-click="AETQ1IM.InputModel.isAnswerYes=!AETQ1IM.InputModel.isAnswerYes" ng-checked="!AETQ1IM.InputModel.isAnswerYes"><span class="masterRadioButtonPadding">No</span>
+                        <br />
+                        <br />
+
+                    </div>
+                    <div class="dDivUploadDocuments" ng-show="AETQ1IM.InputModel.isAnswerYes">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <p class="masterColorTextLightNavy"><b>Citizens:</b></p>
+                                        <ul class="masterColorTextLightNavy">
+                                            <li>Valid passport, and</li>
+                                            <li>
+                                                Australian or New Zealand Certificate of Citizenship (if
+                                                applicable)
+                                            </li>
+                                        </ul>
+                                        <p class="masterColorTextLightNavy"><b>Permanent Residents:</b></p>
+                                        <ul class="masterColorTextLightNavy">
+                                            <li>Valid passport, and</li>
+                                            <li>
+                                                Evidence of Australian or New Zealand permanent residency
+                                                status
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td valign="top">
+                                    <div>
+                                        <form name="birthCertFileUpload">
+                                            <div ng-hide="AETQ1IM.InputModel.File.Id==0">
+                                                <!--"-->
+                                                <span class="masterColorTextLightNavy">
+                                                    {{AETQ1IM.InputModel.File.Name}}&nbsp;
+                                                    <a class="fa fa-download masterColorTextRed" ng-hide="isApplicationSubmitted" ng-href="/Attachment/DownloadAttachment?url={{AETQ1IM.InputModel.File.Url}}"></a>&nbsp;&nbsp;&nbsp;
+                                                    <i class="fa fa-trash-o masterColorTextRed" ng-hide="isApplicationSubmitted" ng-click="deleteFileOnClick(AETQ1IM.InputModel.File.Id,1)"></i>
+                                                </span>
+                                            </div>
+                                            <p ng-hide="AETQ1IM.InputModel.File.Id!=0" class="masterColorTextLightNavy">
+                                                <b>No items to display</b>
+                                            </p>
+                                            <div ng-hide="AETQ1IM.InputModel.File.Id!=0">
+                                                <!---->
+                                                <input type="file" ng-disabled="isApplicationSubmitted" nv-file-select="" uploader="birthCertELPR" multiple />
+                                                <br /><span class="masterColorTextLightNavy dSmallFont"><i>Supporting documents must be single PDF file no larger than 5MB.</i></span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br />
+                </div>
+                <div ng-show="!AETQ1IM.InputModel.isAnswerYes">
+                    <br />
+                    <div class="dDivUploadDocuments" ng-show="!AETQ1IM.InputModel.isAnswerYes">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div style="margin-right:15px;">
+                                        <p class="masterColorTextLightNavy"><b>Visa holders:</b></p>
+                                        <ul class="masterColorTextLightNavy">
+                                            <li>Valid passport, and</li>
+                                            <li>Current visa or in-progress visa application</li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td valign="top">
+                                    <div>
+                                        <form name="visaFileUpload">
+                                            <div ng-hide="AETQ2IM.InputModel.File.Id==0">
+
+                                                <span class="masterColorTextLightNavy">
+                                                    {{AETQ2IM.InputModel.File.Name}}&nbsp;
+                                                    <a class="fa fa-download masterColorTextRed" ng-hide="isApplicationSubmitted" ng-href="/Attachment/DownloadAttachment?url={{AETQ2IM.InputModel.File.Url}}"></a>&nbsp;&nbsp;&nbsp;
+                                                    <i class="fa fa-trash-o masterColorTextRed" ng-hide="isApplicationSubmitted" ng-click="deleteFileOnClick(AETQ2IM.InputModel.File.Id,2)"></i>
+                                                </span>
+                                            </div>
+                                            <p ng-hide="AETQ2IM.InputModel.File.Id!=0" class="masterColorTextLightNavy">
+                                                <b>No items to display</b>
+                                            </p>
+                                            <div ng-hide="AETQ2IM.InputModel.File.Id!=0">
+
+                                                <input type="file" ng-disabled="isApplicationSubmitted" nv-file-select="" uploader="visaDocumentELVS" multiple />
+                                                <br /><span class="masterColorTextLightNavy dSmallFont"><i>Supporting documents must be single PDF file no larger than 5MB.</i></span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<br />
+
+<div class="dSelectionCriteriaObjectBox" id="dEligQ3">
+    <div class="dSelectionCriteriaObjectHeader" ng-click="appEligQ3Visibility=!appEligQ3Visibility">
+        Backup
+        <div class="etObjectsInline float-right">
+            <span>
+                <i class="fa fa-plus" ng-show="!appEligQ3Visibility"></i>
+                <i class="fa fa-minus" ng-show="appEligQ3Visibility"></i>
+            </span>
+        </div>
+    </div>
+    <div class="dSelectionCriteriaQuestion" ng-show="appEligQ3Visibility">
+        <b>
+            Please provide evidence of your citizenship, permanent residency, or visa status with certified
+            copies of the required documents as below. Passports should be certified on the page that shows
+            your photograph and your personal information. Applications without this evidence will not be
+            considered for selection.
+        </b>
+        <div class="dSelectionCriteriaSubQuestion">
+            <div ng-show="AETQ1IM.InputModel.isAnswerYes">
+
+            </div>
+            <div ng-show="!AETQ1IM.InputModel.isAnswerYes">
+
+            </div>
+            <div class="dSelectionCriteriaSubQuestion">
+                <div>
+                    <br />
+                    <p>
+                        <b>Are you an Australian/New Zealand citizen, or Permanent Resident (PR)?</b>
+                    </p>
+                    <div class="etNestedObject">
+                        <input type="radio" ng-disabled="isApplicationSubmitted" name="ANZCYNchoice" ng-click="AETQ1IM.InputModel.isAnswerYes=!AETQ1IM.InputModel.isAnswerYes" ng-checked="AETQ1IM.InputModel.isAnswerYes"><span class="masterRadioButtonPadding">Yes</span>
+                        <br />
+                        <input type="radio" ng-disabled="isApplicationSubmitted" name="ANZCYNchoice" ng-click="AETQ1IM.InputModel.isAnswerYes=!AETQ1IM.InputModel.isAnswerYes" ng-checked="!AETQ1IM.InputModel.isAnswerYes"><span class="masterRadioButtonPadding">No</span>
+                        <br />
+                        <br />
+
+                    </div>
+                    <div class="dDivUploadDocuments" ng-show="AETQ1IM.InputModel.isAnswerYes">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <p class="masterColorTextLightNavy"><b>Citizens:</b></p>
+                                        <ul class="masterColorTextLightNavy">
+                                            <li>Valid passport, and</li>
+                                            <li>
+                                                Australian or New Zealand Certificate of Citizenship (if
+                                                applicable)
+                                            </li>
+                                        </ul>
+                                        <p class="masterColorTextLightNavy"><b>Permanent Residents:</b></p>
+                                        <ul class="masterColorTextLightNavy">
+                                            <li>Valid passport, and</li>
+                                            <li>
+                                                Evidence of Australian or New Zealand permanent residency
+                                                status
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td valign="top">
+                                    <div>
+                                        <form name="birthCertFileUpload">
+                                            <div ng-hide="AETQ1IM.InputModel.File.Id==0">
+                                                <!--"-->
+                                                <span class="masterColorTextLightNavy">
+                                                    {{AETQ1IM.InputModel.File.Name}}&nbsp;
+                                                    <a class="fa fa-download masterColorTextRed" ng-hide="isApplicationSubmitted" ng-href="/Attachment/DownloadAttachment?url={{AETQ1IM.InputModel.File.Url}}"></a>&nbsp;&nbsp;&nbsp;
+                                                    <i class="fa fa-trash-o masterColorTextRed" ng-hide="isApplicationSubmitted" ng-click="deleteFileOnClick(AETQ1IM.InputModel.File.Id,1)"></i>
+                                                </span>
+                                            </div>
+                                            <p ng-hide="AETQ1IM.InputModel.File.Id!=0" class="masterColorTextLightNavy">
+                                                <b>No items to display</b>
+                                            </p>
+                                            <div ng-hide="AETQ1IM.InputModel.File.Id!=0">
+                                                <!---->
+                                                <input type="file" ng-disabled="isApplicationSubmitted" nv-file-select="" uploader="birthCertELPR" multiple />
+                                                <br /><span class="masterColorTextLightNavy dSmallFont"><i>Supporting documents must be single PDF file no larger than 5MB.</i></span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br />
+                </div>
+                <div ng-show="!AETQ1IM.InputModel.isAnswerYes">
+                    <br />
+                    <div class="dDivUploadDocuments" ng-show="!AETQ1IM.InputModel.isAnswerYes">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div style="margin-right:15px;">
+                                        <p class="masterColorTextLightNavy"><b>Visa holders:</b></p>
+                                        <ul class="masterColorTextLightNavy">
+                                            <li>Valid passport, and</li>
+                                            <li>Current visa or in-progress visa application</li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td valign="top">
+                                    <div>
+                                        <form name="visaFileUpload">
+                                            <div ng-hide="AETQ2IM.InputModel.File.Id==0">
+
+                                                <span class="masterColorTextLightNavy">
+                                                    {{AETQ2IM.InputModel.File.Name}}&nbsp;
+                                                    <a class="fa fa-download masterColorTextRed" ng-hide="isApplicationSubmitted" ng-href="/Attachment/DownloadAttachment?url={{AETQ2IM.InputModel.File.Url}}"></a>&nbsp;&nbsp;&nbsp;
+                                                    <i class="fa fa-trash-o masterColorTextRed" ng-hide="isApplicationSubmitted" ng-click="deleteFileOnClick(AETQ2IM.InputModel.File.Id,2)"></i>
+                                                </span>
+                                            </div>
+                                            <p ng-hide="AETQ2IM.InputModel.File.Id!=0" class="masterColorTextLightNavy">
+                                                <b>No items to display</b>
+                                            </p>
+                                            <div ng-hide="AETQ2IM.InputModel.File.Id!=0">
+
+                                                <input type="file" ng-disabled="isApplicationSubmitted" nv-file-select="" uploader="visaDocumentELVS" multiple />
+                                                <br /><span class="masterColorTextLightNavy dSmallFont"><i>Supporting documents must be single PDF file no larger than 5MB.</i></span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<br />
+
+<div class="dSelectionCriteriaObjectBox" id="dEligQ4">
+    <div class="dSelectionCriteriaObjectHeader" ng-click="appEligQ4Visibility=!appEligQ4Visibility">
+        RecordList
+        <div class="etObjectsInline float-right">
+            <span>
+                <i class="fa fa-plus" ng-show="!appEligQ4Visibility"></i>
+                <i class="fa fa-minus" ng-show="appEligQ4Visibility"></i>
+            </span>
+        </div>
+    </div>
+    <div class="dSelectionCriteriaQuestion" ng-show="appEligQ4Visibility">
+        <b>
+            Please provide evidence of your citizenship, permanent residency, or visa status with certified
+            copies of the required documents as below. Passports should be certified on the page that shows
+            your photograph and your personal information. Applications without this evidence will not be
+            considered for selection.
+        </b>
+        <div class="dSelectionCriteriaSubQuestion">
+            <div ng-show="AETQ1IM.InputModel.isAnswerYes">
+
+            </div>
+            <div ng-show="!AETQ1IM.InputModel.isAnswerYes">
+
+            </div>
+            <div class="dSelectionCriteriaSubQuestion">
+                <div>
+                    <br />
+                    <p>
+                        <b>Are you an Australian/New Zealand citizen, or Permanent Resident (PR)?</b>
+                    </p>
+                    <div class="etNestedObject">
+                        <input type="radio" ng-disabled="isApplicationSubmitted" name="ANZCYNchoice" ng-click="AETQ1IM.InputModel.isAnswerYes=!AETQ1IM.InputModel.isAnswerYes" ng-checked="AETQ1IM.InputModel.isAnswerYes"><span class="masterRadioButtonPadding">Yes</span>
+                        <br />
+                        <input type="radio" ng-disabled="isApplicationSubmitted" name="ANZCYNchoice" ng-click="AETQ1IM.InputModel.isAnswerYes=!AETQ1IM.InputModel.isAnswerYes" ng-checked="!AETQ1IM.InputModel.isAnswerYes"><span class="masterRadioButtonPadding">No</span>
+                        <br />
+                        <br />
+
+                    </div>
+                    <div class="dDivUploadDocuments" ng-show="AETQ1IM.InputModel.isAnswerYes">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <p class="masterColorTextLightNavy"><b>Citizens:</b></p>
+                                        <ul class="masterColorTextLightNavy">
+                                            <li>Valid passport, and</li>
+                                            <li>
+                                                Australian or New Zealand Certificate of Citizenship (if
+                                                applicable)
+                                            </li>
+                                        </ul>
+                                        <p class="masterColorTextLightNavy"><b>Permanent Residents:</b></p>
+                                        <ul class="masterColorTextLightNavy">
+                                            <li>Valid passport, and</li>
+                                            <li>
+                                                Evidence of Australian or New Zealand permanent residency
+                                                status
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td valign="top">
+                                    <div>
+                                        <form name="birthCertFileUpload">
+                                            <div ng-hide="AETQ1IM.InputModel.File.Id==0">
+                                                <!--"-->
+                                                <span class="masterColorTextLightNavy">
+                                                    {{AETQ1IM.InputModel.File.Name}}&nbsp;
+                                                    <a class="fa fa-download masterColorTextRed" ng-hide="isApplicationSubmitted" ng-href="/Attachment/DownloadAttachment?url={{AETQ1IM.InputModel.File.Url}}"></a>&nbsp;&nbsp;&nbsp;
+                                                    <i class="fa fa-trash-o masterColorTextRed" ng-hide="isApplicationSubmitted" ng-click="deleteFileOnClick(AETQ1IM.InputModel.File.Id,1)"></i>
+                                                </span>
+                                            </div>
+                                            <p ng-hide="AETQ1IM.InputModel.File.Id!=0" class="masterColorTextLightNavy">
+                                                <b>No items to display</b>
+                                            </p>
+                                            <div ng-hide="AETQ1IM.InputModel.File.Id!=0">
+                                                <!---->
+                                                <input type="file" ng-disabled="isApplicationSubmitted" nv-file-select="" uploader="birthCertELPR" multiple />
+                                                <br /><span class="masterColorTextLightNavy dSmallFont"><i>Supporting documents must be single PDF file no larger than 5MB.</i></span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br />
+                </div>
+                <div ng-show="!AETQ1IM.InputModel.isAnswerYes">
+                    <br />
+                    <div class="dDivUploadDocuments" ng-show="!AETQ1IM.InputModel.isAnswerYes">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div style="margin-right:15px;">
+                                        <p class="masterColorTextLightNavy"><b>Visa holders:</b></p>
+                                        <ul class="masterColorTextLightNavy">
+                                            <li>Valid passport, and</li>
+                                            <li>Current visa or in-progress visa application</li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td valign="top">
+                                    <div>
+                                        <form name="visaFileUpload">
+                                            <div ng-hide="AETQ2IM.InputModel.File.Id==0">
+
+                                                <span class="masterColorTextLightNavy">
+                                                    {{AETQ2IM.InputModel.File.Name}}&nbsp;
+                                                    <a class="fa fa-download masterColorTextRed" ng-hide="isApplicationSubmitted" ng-href="/Attachment/DownloadAttachment?url={{AETQ2IM.InputModel.File.Url}}"></a>&nbsp;&nbsp;&nbsp;
+                                                    <i class="fa fa-trash-o masterColorTextRed" ng-hide="isApplicationSubmitted" ng-click="deleteFileOnClick(AETQ2IM.InputModel.File.Id,2)"></i>
+                                                </span>
+                                            </div>
+                                            <p ng-hide="AETQ2IM.InputModel.File.Id!=0" class="masterColorTextLightNavy">
+                                                <b>No items to display</b>
+                                            </p>
+                                            <div ng-hide="AETQ2IM.InputModel.File.Id!=0">
+
+                                                <input type="file" ng-disabled="isApplicationSubmitted" nv-file-select="" uploader="visaDocumentELVS" multiple />
+                                                <br /><span class="masterColorTextLightNavy dSmallFont"><i>Supporting documents must be single PDF file no larger than 5MB.</i></span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<br />
+
+<div class="dSelectionCriteriaObjectBox" id="dEligQ5">
+    <div class="dSelectionCriteriaObjectHeader" ng-click="appEligQ5Visibility=!appEligQ5Visibility">
+        Backup Locations
+        <div class="etObjectsInline float-right">
+            <span>
+                <i class="fa fa-plus" ng-show="!appEligQ5Visibility"></i>
+                <i class="fa fa-minus" ng-show="appEligQ5Visibility"></i>
+            </span>
+        </div>
+    </div>
+    <div class="dSelectionCriteriaQuestion" ng-show="appEligQ5Visibility">
+        <b>
+            Please provide evidence of your citizenship, permanent residency, or visa status with certified
+            copies of the required documents as below. Passports should be certified on the page that shows
+            your photograph and your personal information. Applications without this evidence will not be
+            considered for selection.
+        </b>
+        <div class="dSelectionCriteriaSubQuestion">
+            <div ng-show="AETQ1IM.InputModel.isAnswerYes">
+
+            </div>
+            <div ng-show="!AETQ1IM.InputModel.isAnswerYes">
+
+            </div>
+            <div class="dSelectionCriteriaSubQuestion">
+                <div>
+                    <br />
+                    <p>
+                        <b>Are you an Australian/New Zealand citizen, or Permanent Resident (PR)?</b>
+                    </p>
+                    <div class="etNestedObject">
+                        <input type="radio" ng-disabled="isApplicationSubmitted" name="ANZCYNchoice" ng-click="AETQ1IM.InputModel.isAnswerYes=!AETQ1IM.InputModel.isAnswerYes" ng-checked="AETQ1IM.InputModel.isAnswerYes"><span class="masterRadioButtonPadding">Yes</span>
+                        <br />
+                        <input type="radio" ng-disabled="isApplicationSubmitted" name="ANZCYNchoice" ng-click="AETQ1IM.InputModel.isAnswerYes=!AETQ1IM.InputModel.isAnswerYes" ng-checked="!AETQ1IM.InputModel.isAnswerYes"><span class="masterRadioButtonPadding">No</span>
+                        <br />
+                        <br />
+
+                    </div>
+                    <div class="dDivUploadDocuments" ng-show="AETQ1IM.InputModel.isAnswerYes">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <p class="masterColorTextLightNavy"><b>Citizens:</b></p>
+                                        <ul class="masterColorTextLightNavy">
+                                            <li>Valid passport, and</li>
+                                            <li>
+                                                Australian or New Zealand Certificate of Citizenship (if
+                                                applicable)
+                                            </li>
+                                        </ul>
+                                        <p class="masterColorTextLightNavy"><b>Permanent Residents:</b></p>
+                                        <ul class="masterColorTextLightNavy">
+                                            <li>Valid passport, and</li>
+                                            <li>
+                                                Evidence of Australian or New Zealand permanent residency
+                                                status
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td valign="top">
+                                    <div>
+                                        <form name="birthCertFileUpload">
+                                            <div ng-hide="AETQ1IM.InputModel.File.Id==0">
+                                                <!--"-->
+                                                <span class="masterColorTextLightNavy">
+                                                    {{AETQ1IM.InputModel.File.Name}}&nbsp;
+                                                    <a class="fa fa-download masterColorTextRed" ng-hide="isApplicationSubmitted" ng-href="/Attachment/DownloadAttachment?url={{AETQ1IM.InputModel.File.Url}}"></a>&nbsp;&nbsp;&nbsp;
+                                                    <i class="fa fa-trash-o masterColorTextRed" ng-hide="isApplicationSubmitted" ng-click="deleteFileOnClick(AETQ1IM.InputModel.File.Id,1)"></i>
+                                                </span>
+                                            </div>
+                                            <p ng-hide="AETQ1IM.InputModel.File.Id!=0" class="masterColorTextLightNavy">
+                                                <b>No items to display</b>
+                                            </p>
+                                            <div ng-hide="AETQ1IM.InputModel.File.Id!=0">
+                                                <!---->
+                                                <input type="file" ng-disabled="isApplicationSubmitted" nv-file-select="" uploader="birthCertELPR" multiple />
+                                                <br /><span class="masterColorTextLightNavy dSmallFont"><i>Supporting documents must be single PDF file no larger than 5MB.</i></span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <br />
+                </div>
+                <div ng-show="!AETQ1IM.InputModel.isAnswerYes">
+                    <br />
+                    <div class="dDivUploadDocuments" ng-show="!AETQ1IM.InputModel.isAnswerYes">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div style="margin-right:15px;">
+                                        <p class="masterColorTextLightNavy"><b>Visa holders:</b></p>
+                                        <ul class="masterColorTextLightNavy">
+                                            <li>Valid passport, and</li>
+                                            <li>Current visa or in-progress visa application</li>
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td valign="top">
+                                    <div>
+                                        <form name="visaFileUpload">
+                                            <div ng-hide="AETQ2IM.InputModel.File.Id==0">
+
+                                                <span class="masterColorTextLightNavy">
+                                                    {{AETQ2IM.InputModel.File.Name}}&nbsp;
+                                                    <a class="fa fa-download masterColorTextRed" ng-hide="isApplicationSubmitted" ng-href="/Attachment/DownloadAttachment?url={{AETQ2IM.InputModel.File.Url}}"></a>&nbsp;&nbsp;&nbsp;
+                                                    <i class="fa fa-trash-o masterColorTextRed" ng-hide="isApplicationSubmitted" ng-click="deleteFileOnClick(AETQ2IM.InputModel.File.Id,2)"></i>
+                                                </span>
+                                            </div>
+                                            <p ng-hide="AETQ2IM.InputModel.File.Id!=0" class="masterColorTextLightNavy">
+                                                <b>No items to display</b>
+                                            </p>
+                                            <div ng-hide="AETQ2IM.InputModel.File.Id!=0">
+
+                                                <input type="file" ng-disabled="isApplicationSubmitted" nv-file-select="" uploader="visaDocumentELVS" multiple />
+                                                <br /><span class="masterColorTextLightNavy dSmallFont"><i>Supporting documents must be single PDF file no larger than 5MB.</i></span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

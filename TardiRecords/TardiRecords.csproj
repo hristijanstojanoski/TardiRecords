@@ -192,6 +192,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AppAdministratorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MainUserController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -205,6 +206,7 @@
   <ItemGroup>
     <Content Include="AngularScripts\App.js" />
     <Content Include="AngularScripts\AppAdministrator\Index.js" />
+    <Content Include="AngularScripts\MainUser\Details.js" />
     <Content Include="AngularScripts\Service.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -1057,6 +1059,8 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\AppAdministrator\Index.cshtml" />
     <Content Include="Scripts\version.json" />
+    <Content Include="Views\MainUser\Index.cshtml" />
+    <Content Include="Views\MainUser\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
