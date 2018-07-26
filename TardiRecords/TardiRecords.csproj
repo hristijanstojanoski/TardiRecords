@@ -207,6 +207,7 @@
     <Content Include="AngularScripts\App.js" />
     <Content Include="AngularScripts\AppAdministrator\Index.js" />
     <Content Include="AngularScripts\MainUser\Details.js" />
+    <Content Include="AngularScripts\AppAdministrator\RecordTypes.js" />
     <Content Include="AngularScripts\Service.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -1060,6 +1061,7 @@
     <Content Include="Views\AppAdministrator\Index.cshtml" />
     <Content Include="Scripts\version.json" />
     <Content Include="Views\MainUser\Index.cshtml" />
+    <Content Include="Views\AppAdministrator\RecordTypes.cshtml" />
     <Content Include="Views\MainUser\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
