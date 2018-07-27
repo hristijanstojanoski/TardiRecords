@@ -1,23 +1,27 @@
 ﻿app.controller('RecordTypesController', ['$scope', '$http', 'RecordTypesService', '$location', '$window', '$filter', '$timeout', '$q',
     function ($scope, $http, RecordTypesService, $location, $window, $filter, $timeout, $q) {
-        //$scope.helloWorld = "Hello world";
-        var Init = function () {
-           // alert("Helou");
-            //console.log();
 
-            RecordTypesService.getGetSubtypes().then(function (response) {
-                console.log(response);
+        $scope.initData = null;
+        $scope.showNewRecordDiv = false;
+
+        var Init = function () {
+
+            RecordTypesService.getAllObjectsOnInit().then(function (response) {
+                $scope.initData = response.data;
+                console.log("$scope.initData", $scope.initData);
             });
         }
         Init();
-
+        $scope.showFriendlyDate = function (jDate) {
+            return moment(jDate).format("DD/MM/YYYY");
+        }
     }]);
 
 app.service("RecordTypesService", ['$http', '$q', '$rootScope', function ($http, $q, $rootScope) {
-    this.getGetSubtypes = function () {
+    this.getAllObjectsOnInit = function () {
         return $http({
             method: 'GET',
-            url: '/AppAdministrator/GetSubtypes',
+            url: '/AppAdministrator/GetRecordTypesObjectsAndData',
             contentType: "application/json; charset=utf-8",
             //params: {
             //    'step': step,

@@ -9,6 +9,6 @@ namespace TardiRecords.Services.Helpers
     public class ActionHandler
     {
         public bool IsSuccess { get; set; }
-        public string Message { get; set; }
+        public string Message { get; set; }        
     }
 }

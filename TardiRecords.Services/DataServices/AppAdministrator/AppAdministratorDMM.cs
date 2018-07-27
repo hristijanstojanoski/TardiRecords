@@ -125,7 +125,7 @@ namespace TardiRecords.Services.DataServices.AppAdministrator
             List<RecordTypeTableViewDM> result = new List<RecordTypeTableViewDM>();
             using (TardiRecordsEntities db = new DataLayer.TardiRecordsEntities())
             {
-                var items = db.RecordType.ToList();
+                var items = db.RecordType;
                 if (items != null)
                 {
                     foreach (var i in items)
