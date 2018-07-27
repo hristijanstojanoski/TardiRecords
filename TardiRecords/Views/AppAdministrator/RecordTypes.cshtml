@@ -4,10 +4,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>RecordTypes</h2>
-
-<div>
-    <div>
+<h2>Record Types</h2><br />
+<script src="~/AngularScripts/AppAdministrator/RecordTypes.js"></script>
+<div ng-controller="RecordTypesController">
+    <div ng-show="!initData.Success.IsSuccess" class="masterColorBackgroundRed">
+        <p><b>Error occured!</b></p>
+        <p>{{initData.Success.Message}}</p>
+    </div>
+    <br />
+    <div ng-show="showNewRecordDiv">
         <table>
             <tr>
                 <td></td>
@@ -20,16 +25,20 @@
                 </td>
                 <td>Subtype:</td>
                 <td>
-                    <select class="form-control"></select>
+                    <select class="form-control">
+                        <option ng-repeat="li in initData.SubtypeList" ng-value="li.Id">
+                            {{li.Name}}
+                        </option>
+                    </select>
                 </td>
             </tr>
             <tr>
                 <td></td>
                 <td colspan="3">
-                    <input type="button" value="Save" class="btn"/>
-                    <input type="button" value="Cancel" class="btn" />
+                    <input type="button" value="Save" class="btn dAddItemRelativeWidth masterColorBackgroundRed text-white" />
+                    <input type="button" value="Cancel" class="btn dAddItemRelativeWidth dBackgroundColorWhite masterColorTextRed" ng-click="showNewRecordDiv=!showNewRecordDiv" />
                 </td>
-                
+
             </tr>
             @*<tr>
                     <td></td>
@@ -48,6 +57,47 @@
                     <td></td>
                 </tr>*@
         </table>
+        <br /><br />
     </div>
-    <div></div>
+    <div class="text-right" ng-show="!showNewRecordDiv">
+        <button type="button" class="btn dAddItemRelativeWidth masterColorBackgroundRed text-white" ng-click="showNewRecordDiv=!showNewRecordDiv">
+            <div class="etObjectsInline">
+                <span>
+                    <i class="fa fa-plus text-white"></i>
+                </span>
+                Add Activity
+            </div>
+        </button>
+    </div>
+    <div>
+        <div>
+            <table class="dTableMainWidth">
+                <tr class="dTableBBheader">
+                    <td><span class="dHideMe">Id</span></td>
+                    <td>Type name</td>
+                    <td>Subtype</td>
+                    <td>Date Created</td>
+                    <td>Date Modified</td>
+                    <td></td>
+                </tr>
+                <tr class="dTableBBsimple" ng-repeat="ap in initData.RecordsList">
+                    <td><span class="dHideMe">{{ap.Id}}</span></td>
+                    <td>{{ap.TypeName}}</td>
+                    <td>{{ap.SubtypeName}}</td>
+                    <td>
+                        <span ng-show="showFriendlyDate(ap.CreatedOn)!='Invalid date'">{{showFriendlyDate(ap.CreatedOn)}}</span>
+                    </td>
+                    <td>
+                        <span ng-show="showFriendlyDate(ap.UpdatedOn)!='Invalid date'">{{showFriendlyDate(ap.UpdatedOn)}}</span>
+                    </td>
+                    <td>
+                        <span title="Delete record"><i class="masterColorTextRed fa fa-times-circle"></i></span>&nbsp;&nbsp;
+                        <span title="Disable record"><i class="masterColorTextRed fa fa-key"></i></span>
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+
+    </div>
 </div>

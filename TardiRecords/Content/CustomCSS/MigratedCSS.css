@@ -17,3 +17,76 @@
 .masterColorTextRed {
     color: #D52B1E;
 }
+
+.masterColorBackgroundRed {
+    background-color: #D52B1E;
+    color: white;
+}
+
+.masterColorTextGray {
+    color: #C9cac8;
+}
+
+.masterColorBackgroundGray {
+    background-color: #C9cac8;
+}
+
+.masterColorTextMagenta {
+    color: #A51140;
+}
+
+.masterColorBackgroundMagenta {
+    background-color: #A51140;
+}
+
+.masterColorTextSkyBlue {
+    color: #75CEDE;
+}
+
+.masterColorBackgroundSkyBlue {
+    background-color: #75CEDE;
+}
+
+.masterColorTextLightNavy {
+    color: #0097A5;
+}
+
+.masterColorBackgroundLightNavy {
+    background-color: #0097A5;
+}
+
+.masterColorTextBlack {
+    color: #000000;
+}
+
+.dTableBBsimple td {
+    border-bottom: 1px solid #C9CAC8 !important;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.dTableMainWidth {
+    width: 100%;
+}
+
+.dTableBBheader td, .dTableBBheader th {
+    border-bottom: 1px solid #D52B1E !important;
+}
+
+.dHideMe {
+    display: none;
+}
+
+.dAddItemRelativeWidth {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: 1px solid #D52B1E !important;
+}
+
+.dBackgroundColorWhite {
+    background-color: #ffffff;
+}
+
+
+
+
