@@ -4,40 +4,38 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>RecordList</h2>
 
 <div ng-controller="IndexController">
-    {{helloWorld}}
-    <div class="text-center">
+    <div>
+        <div>
+            <table class="dTableMainWidth">
+                <tr class="dTableBBheader">
+                    <td><span class="dHideMe">Id</span></td>
+                    <td>Type name</td>
+                    <td>Subtype</td>
+                    <td>Date Created</td>
+                    <td>Date Modified</td>
+                    <td></td>
+                </tr>
+                <tr class="dTableBBsimple">
+                    <td><span class="dHideMe">{{ap.Id}}</span></td>
+                    <td>test1</td>
+                    <td>test2</td>
+                    <td>
+                        test3n
+                    </td>
+                    <td>
+                       53s5
+                    </td>
+                    <td>
+                        <span title="Delete record"><i class="masterColorTextRed fa fa-times-circle"></i></span>&nbsp;&nbsp;
+                        <span title="Disable record"><i class="masterColorTextRed fa fa-key"></i></span>
+                    </td>
 
-        <div class="etObjectsInline adminDivPaddingsIndex">
-            <button type="button" class="btn adminDashboardButtons" id="btnEmailTemplates">
-                <span><i class="fa fa-5x fa-clipboard masterColorTextRed"></i> </span>
-                <br /><br />
-                <h2 class="masterColorTextRed"><b>Types</b></h2>
-            </button>
+                </tr>
+            </table>
         </div>
-        @*<div class="etObjectsInline adminDivPaddingsIndex">
-            <button type="button" class="btn adminDashboardButtons" id="btnAllUsers">
-                <span><i class="fa fa-5x fa-users masterColorTextRed"></i> </span>
-                <br /><br />
-                <h2 class="masterColorTextRed"><b>Users</b></h2>
-            </button>
-        </div>
-        <div class="etObjectsInline adminDivPaddingsIndex">
-            <button type="button" class="btn adminDashboardButtons" id="btnAppDateCutoff">
-                <span><i class="fa fa-5x fa-cogs masterColorTextRed"></i> </span>
-                <br /><br />
-                <h2 class="masterColorTextRed"><b>Machines</b></h2>
-            </button>
-        </div>*@
-        <!--
-        <div class="etObjectsInline adminDivPaddingsIndex">
-            <button type="button" class="btn adminDashboardButtons" id="btnAppReview">
-                <span><i class="fa fa-5x fa-edit masterColorTextRed"></i> </span>
-                <br /><br />
-                <h2 class="masterColorTextRed"><b>Application<br />Review</b></h2>
-            </button>
-        </div>-->
+        <div></div>
     </div>
 </div>

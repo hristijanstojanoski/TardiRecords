@@ -13,5 +13,10 @@ namespace TardiRecords.Services.DataViewModels
         public List<EnumDropdownListVM> SubtypeList { get; set; }
         public List<RecordTypeTableViewDM> RecordsList { get; set; }
         public ActionHandler Success { get; set; }
+
+        public RecordTypeNgVM()
+        {
+            Success = new ActionHandler();
+        }
     }
 }
