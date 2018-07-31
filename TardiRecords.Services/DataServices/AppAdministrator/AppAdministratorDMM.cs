@@ -125,7 +125,7 @@ namespace TardiRecords.Services.DataServices.AppAdministrator
             List<RecordTypeTableViewDM> result = new List<RecordTypeTableViewDM>();
             using (TardiRecordsEntities db = new DataLayer.TardiRecordsEntities())
             {
-                var items = db.RecordType;
+                var items = db.RecordType.Where(x=>x.isDeleted==false&&x.isEnabled==true);
                 if (items != null)
                 {
                     foreach (var i in items)
