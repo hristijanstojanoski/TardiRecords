@@ -6,57 +6,43 @@
 
 <h2>Record Types</h2><br />
 <script src="~/AngularScripts/AppAdministrator/RecordTypes.js"></script>
-<div ng-controller="RecordTypesController">
+<div ng-controller="RecordTypesController as rtCtrl">
     <div ng-show="!initData.Success.IsSuccess" class="masterColorBackgroundRed">
         <p><b>Error occured!</b></p>
         <p>{{initData.Success.Message}}</p>
     </div>
     <br />
     <div ng-show="showNewRecordDiv">
-        <table>
-            <tr>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Type Name:</td>
-                <td>
-                    <input type="text" class="form-control" />
-                </td>
-                <td>Subtype:</td>
-                <td>
-                    <select class="form-control">
-                        <option ng-repeat="li in initData.SubtypeList" ng-value="li.Id">
-                            {{li.Name}}
-                        </option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td colspan="3">
-                    <input type="button" value="Save" class="btn dAddItemRelativeWidth masterColorBackgroundRed text-white" />
-                    <input type="button" value="Cancel" class="btn dAddItemRelativeWidth dBackgroundColorWhite masterColorTextRed" ng-click="showNewRecordDiv=!showNewRecordDiv" />
-                </td>
+        <form name="rtCtrl.NewRecord">
+            <table>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Type Name:</td>
+                    <td>
+                        <input type="text" class="form-control" ng-model="newRecord.TypeName"  required/>
+                    </td>
+                    <td>Subtype:</td>
+                    <td>
+                        <select class="form-control" ng-model="newRecord.SubtypeListId" required>
+                            <option ng-repeat="li in initData.SubtypeList" ng-value="li.Id">
+                                {{li.Name}}
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="3">
+                        <input type="button" value="Save" ng-disabled="rtCtrl.NewRecord.$invalid" class="btn dAddItemRelativeWidth masterColorBackgroundRed text-white" ng-click="addNewRecord()" />
+                        <input type="button" value="Cancel" class="btn dAddItemRelativeWidth dBackgroundColorWhite masterColorTextRed" ng-click="showNewRecordDiv=!showNewRecordDiv" />
+                    </td>
 
-            </tr>
-            @*<tr>
-                    <td></td>
-                    <td></td>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>*@
-        </table>
+            </table>
+        </form>        
         <br /><br />
     </div>
     <div class="text-right" ng-show="!showNewRecordDiv">
@@ -91,8 +77,8 @@
                         <span ng-show="showFriendlyDate(ap.UpdatedOn)!='Invalid date'">{{showFriendlyDate(ap.UpdatedOn)}}</span>
                     </td>
                     <td>
-                        <span title="Delete record"><i class="masterColorTextRed fa fa-times-circle"></i></span>&nbsp;&nbsp;
-                        <span title="Disable record"><i class="masterColorTextRed fa fa-key"></i></span>
+                        <span title="Delete record"><i class="masterColorTextRed fa fa-times-circle" ng-click="deleteType(ap.Id)"></i></span>&nbsp;&nbsp;
+                        <span title="Disable record"><i class="masterColorTextRed fa fa-key" ng-click="deactivateType(ap.Id)"></i></span>
                     </td>
 
                 </tr>

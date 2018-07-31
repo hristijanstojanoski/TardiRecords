@@ -28,6 +28,16 @@ namespace TardiRecords.Controllers
             return View();
         }
 
+        public ActionResult AllUsers()
+        {
+            return View();
+        }
+
+        public ActionResult AllMachines()
+        {
+            return View();
+        }
+
         public ActionResult GetRecordTypesObjectsAndData()
         {
             RecordTypeNgVM obj = new RecordTypeNgVM();
@@ -49,7 +59,7 @@ namespace TardiRecords.Controllers
         public ActionResult AddOrUpdateRecordType(Guid? id, string typeName, int subTypeId)
         {
             Guid UID = Guid.NewGuid();
-            if (id != null || id != new Guid()) { UID = (Guid)id; }
+            if (id != null) { UID = (Guid)id; }
             RecordTypeDM newRecord = new RecordTypeDM()
             {
                 Id = UID,
