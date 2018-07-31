@@ -25,8 +25,8 @@ namespace TardiRecords.DataLayer
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<AllowedTypesForUser> AllowedTypesForUser { get; set; }
+        public virtual DbSet<AppUsers> AppUsers { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
@@ -39,5 +39,6 @@ namespace TardiRecords.DataLayer
         public virtual DbSet<Notes> Notes { get; set; }
         public virtual DbSet<RecordList> RecordList { get; set; }
         public virtual DbSet<RecordType> RecordType { get; set; }
+        public virtual DbSet<vw_AllUsers> vw_AllUsers { get; set; }
     }
 }
