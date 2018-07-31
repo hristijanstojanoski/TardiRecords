@@ -4,17 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TardiRecordsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="__MigrationHistory">
-          <Key>
-            <PropertyRef Name="MigrationId" />
-            <PropertyRef Name="ContextKey" />
-          </Key>
-          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
-          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
-          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
-        </EntityType>
+    <Schema Namespace="TardiRecordsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AllowedTypesForUser">
           <Key>
             <PropertyRef Name="id" />
@@ -25,6 +15,20 @@
           <Property Name="createdBy" Type="uniqueidentifier" Nullable="false" />
           <Property Name="createdDate" Type="datetime" Nullable="false" />
           <Property Name="modifyBy" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="modifyDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AppUsers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="aspNetUserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="firstName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="lastName" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="position" Type="nvarchar" MaxLength="250" />
+          <Property Name="createdBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="createdDate" Type="datetime" Nullable="false" />
+          <Property Name="modifyBy" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="modifyDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetRoles">
@@ -193,6 +197,21 @@
           <Property Name="modifiedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="modifyDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TardiRecords.dbo.vw_AllUsers' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vw_AllUsers">
+          <Key>
+            <PropertyRef Name="AspNetUserId" />
+            <PropertyRef Name="AppUserId" />
+            <PropertyRef Name="firstName" />
+            <PropertyRef Name="lastName" />
+          </Key>
+          <Property Name="AspNetUserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="AppUserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="firstName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="lastName" Type="nvarchar" MaxLength="250" Nullable="false" />
+        </EntityType>
         <Association Name="FK_AllowedTypesForUser_RecordType">
           <End Role="RecordType" Type="Self.RecordType" Multiplicity="1" />
           <End Role="AllowedTypesForUser" Type="Self.AllowedTypesForUser" Multiplicity="*" />
@@ -202,6 +221,18 @@
             </Principal>
             <Dependent Role="AllowedTypesForUser">
               <PropertyRef Name="recordTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AppUsers_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="AppUsers" Type="Self.AppUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AppUsers">
+              <PropertyRef Name="aspNetUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -538,8 +569,8 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="TardiRecordsModelStoreContainer">
-          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AllowedTypesForUser" EntityType="Self.AllowedTypesForUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AppUsers" EntityType="Self.AppUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
@@ -553,9 +584,22 @@
           <EntitySet Name="Notes" EntityType="Self.Notes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RecordList" EntityType="Self.RecordList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RecordType" EntityType="Self.RecordType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vw_AllUsers" EntityType="Self.vw_AllUsers" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vw_AllUsers].[AspNetUserId] AS [AspNetUserId], 
+    [vw_AllUsers].[AppUserId] AS [AppUserId], 
+    [vw_AllUsers].[Email] AS [Email], 
+    [vw_AllUsers].[firstName] AS [firstName], 
+    [vw_AllUsers].[lastName] AS [lastName]
+    FROM [dbo].[vw_AllUsers] AS [vw_AllUsers]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_AllowedTypesForUser_RecordType" Association="Self.FK_AllowedTypesForUser_RecordType">
             <End Role="RecordType" EntitySet="RecordType" />
             <End Role="AllowedTypesForUser" EntitySet="AllowedTypesForUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AppUsers_AspNetUsers" Association="Self.FK_AppUsers_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AppUsers" EntitySet="AppUsers" />
           </AssociationSet>
           <AssociationSet Name="FK_BackupLocations_AspNetUsers_CreatedBy" Association="Self.FK_BackupLocations_AspNetUsers_CreatedBy">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -666,21 +710,139 @@
             <End Role="RecordType" EntitySet="RecordType" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TardiRecordsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="C__MigrationHistory">
-          <Key>
-            <PropertyRef Name="MigrationId" />
-            <PropertyRef Name="ContextKey" />
-          </Key>
-          <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
-          <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
-        </EntityType>
+        <EntityContainer Name="TardiRecordsEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AllowedTypesForUser" EntityType="TardiRecordsModel.AllowedTypesForUser" />
+          <EntitySet Name="AppUsers" EntityType="TardiRecordsModel.AppUsers" />
+          <EntitySet Name="AspNetRoles" EntityType="TardiRecordsModel.AspNetRoles" />
+          <EntitySet Name="AspNetUserClaims" EntityType="TardiRecordsModel.AspNetUserClaims" />
+          <EntitySet Name="AspNetUserLogins" EntityType="TardiRecordsModel.AspNetUserLogins" />
+          <EntitySet Name="AspNetUsers" EntityType="TardiRecordsModel.AspNetUsers" />
+          <EntitySet Name="BackupLocations" EntityType="TardiRecordsModel.BackupLocations" />
+          <EntitySet Name="DBs" EntityType="TardiRecordsModel.DBs" />
+          <EntitySet Name="Files" EntityType="TardiRecordsModel.Files" />
+          <EntitySet Name="Machine" EntityType="TardiRecordsModel.Machine" />
+          <EntitySet Name="MachinesInUse" EntityType="TardiRecordsModel.MachinesInUse" />
+          <EntitySet Name="Notes" EntityType="TardiRecordsModel.Notes" />
+          <EntitySet Name="RecordList" EntityType="TardiRecordsModel.RecordList" />
+          <EntitySet Name="RecordType" EntityType="TardiRecordsModel.RecordType" />
+          <EntitySet Name="vw_AllUsers" EntityType="TardiRecordsModel.vw_AllUsers" />
+          <AssociationSet Name="FK_AllowedTypesForUser_RecordType" Association="TardiRecordsModel.FK_AllowedTypesForUser_RecordType">
+            <End Role="RecordType" EntitySet="RecordType" />
+            <End Role="AllowedTypesForUser" EntitySet="AllowedTypesForUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AppUsers_AspNetUsers" Association="TardiRecordsModel.FK_AppUsers_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AppUsers" EntitySet="AppUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="TardiRecordsModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="TardiRecordsModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BackupLocations_AspNetUsers_CreatedBy" Association="TardiRecordsModel.FK_BackupLocations_AspNetUsers_CreatedBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="BackupLocations" EntitySet="BackupLocations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BackupLocations_AspNetUsers_ModifyBy" Association="TardiRecordsModel.FK_BackupLocations_AspNetUsers_ModifyBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="BackupLocations" EntitySet="BackupLocations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DBs_AspNetUsers_CreatedBy" Association="TardiRecordsModel.FK_DBs_AspNetUsers_CreatedBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="DBs" EntitySet="DBs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DBs_AspNetUsers_ModifyBy" Association="TardiRecordsModel.FK_DBs_AspNetUsers_ModifyBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="DBs" EntitySet="DBs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Files_AspNetUsers_CreatedBy" Association="TardiRecordsModel.FK_Files_AspNetUsers_CreatedBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Files" EntitySet="Files" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Files_AspNetUsers_ModifyBy" Association="TardiRecordsModel.FK_Files_AspNetUsers_ModifyBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Files" EntitySet="Files" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Machine_AspNetUsers_CreatedBy" Association="TardiRecordsModel.FK_Machine_AspNetUsers_CreatedBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Machine" EntitySet="Machine" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Machine_AspNetUsers_ModifyBy" Association="TardiRecordsModel.FK_Machine_AspNetUsers_ModifyBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Machine" EntitySet="Machine" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MachinesInUse_AspNetUsers" Association="TardiRecordsModel.FK_MachinesInUse_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="MachinesInUse" EntitySet="MachinesInUse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MachinesInUse_AspNetUsers_CreatedBy" Association="TardiRecordsModel.FK_MachinesInUse_AspNetUsers_CreatedBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="MachinesInUse" EntitySet="MachinesInUse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MachinesInUse_AspNetUsers_ModifyBy" Association="TardiRecordsModel.FK_MachinesInUse_AspNetUsers_ModifyBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="MachinesInUse" EntitySet="MachinesInUse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notes_AspNetUsers_CreatedBy" Association="TardiRecordsModel.FK_Notes_AspNetUsers_CreatedBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Notes" EntitySet="Notes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notes_AspNetUsers_ModifyBy" Association="TardiRecordsModel.FK_Notes_AspNetUsers_ModifyBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Notes" EntitySet="Notes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RecordList_AspNetUsers_CreatedBy" Association="TardiRecordsModel.FK_RecordList_AspNetUsers_CreatedBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="RecordList" EntitySet="RecordList" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RecordList_AspNetUsers_ModifyBy" Association="TardiRecordsModel.FK_RecordList_AspNetUsers_ModifyBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="RecordList" EntitySet="RecordList" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RecordType_AspNetUsers_CreatedBy" Association="TardiRecordsModel.FK_RecordType_AspNetUsers_CreatedBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="RecordType" EntitySet="RecordType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RecordType_AspNetUsers_ModifiedBy" Association="TardiRecordsModel.FK_RecordType_AspNetUsers_ModifiedBy">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="RecordType" EntitySet="RecordType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BackupLocations_DBs" Association="TardiRecordsModel.FK_BackupLocations_DBs">
+            <End Role="DBs" EntitySet="DBs" />
+            <End Role="BackupLocations" EntitySet="BackupLocations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BackupLocations_Machine" Association="TardiRecordsModel.FK_BackupLocations_Machine">
+            <End Role="Machine" EntitySet="Machine" />
+            <End Role="BackupLocations" EntitySet="BackupLocations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Files_RecordList" Association="TardiRecordsModel.FK_Files_RecordList">
+            <End Role="RecordList" EntitySet="RecordList" />
+            <End Role="Files" EntitySet="Files" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MachinesInUse_Machine" Association="TardiRecordsModel.FK_MachinesInUse_Machine">
+            <End Role="Machine" EntitySet="Machine" />
+            <End Role="MachinesInUse" EntitySet="MachinesInUse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notes_Machine" Association="TardiRecordsModel.FK_Notes_Machine">
+            <End Role="Machine" EntitySet="Machine" />
+            <End Role="Notes" EntitySet="Notes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notes_RecordList" Association="TardiRecordsModel.FK_Notes_RecordList">
+            <End Role="RecordList" EntitySet="RecordList" />
+            <End Role="Notes" EntitySet="Notes" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="TardiRecordsModel.AspNetUserRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="AllowedTypesForUser">
           <Key>
             <PropertyRef Name="id" />
@@ -692,25 +854,40 @@
           <Property Name="createdDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="modifyBy" Type="Guid" Nullable="false" />
           <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="RecordType" Relationship="Self.FK_AllowedTypesForUser_RecordType" FromRole="AllowedTypesForUser" ToRole="RecordType" />
+          <NavigationProperty Name="RecordType" Relationship="TardiRecordsModel.FK_AllowedTypesForUser_RecordType" FromRole="AllowedTypesForUser" ToRole="RecordType" />
+        </EntityType>
+        <EntityType Name="AppUsers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="aspNetUserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="firstName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="lastName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="position" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="createdBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="createdDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="modifyBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AspNetUsers" Relationship="TardiRecordsModel.FK_AppUsers_AspNetUsers" FromRole="AppUsers" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="TardiRecordsModel.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetUserClaims">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers" Relationship="TardiRecordsModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetUserLogins">
           <Key>
@@ -718,16 +895,16 @@
             <PropertyRef Name="ProviderKey" />
             <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
+          <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="TardiRecordsModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="AspNetUsers">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
           <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -738,27 +915,28 @@
           <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
-          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
-          <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-          <NavigationProperty Name="BackupLocations" Relationship="Self.FK_BackupLocations_AspNetUsers_CreatedBy" FromRole="AspNetUsers" ToRole="BackupLocations" />
-          <NavigationProperty Name="BackupLocations1" Relationship="Self.FK_BackupLocations_AspNetUsers_ModifyBy" FromRole="AspNetUsers" ToRole="BackupLocations" />
-          <NavigationProperty Name="DBs" Relationship="Self.FK_DBs_AspNetUsers_CreatedBy" FromRole="AspNetUsers" ToRole="DBs" />
-          <NavigationProperty Name="DBs1" Relationship="Self.FK_DBs_AspNetUsers_ModifyBy" FromRole="AspNetUsers" ToRole="DBs" />
-          <NavigationProperty Name="Files" Relationship="Self.FK_Files_AspNetUsers_CreatedBy" FromRole="AspNetUsers" ToRole="Files" />
-          <NavigationProperty Name="Files1" Relationship="Self.FK_Files_AspNetUsers_ModifyBy" FromRole="AspNetUsers" ToRole="Files" />
-          <NavigationProperty Name="Machine" Relationship="Self.FK_Machine_AspNetUsers_CreatedBy" FromRole="AspNetUsers" ToRole="Machine" />
-          <NavigationProperty Name="Machine1" Relationship="Self.FK_Machine_AspNetUsers_ModifyBy" FromRole="AspNetUsers" ToRole="Machine" />
-          <NavigationProperty Name="MachinesInUse" Relationship="Self.FK_MachinesInUse_AspNetUsers" FromRole="AspNetUsers" ToRole="MachinesInUse" />
-          <NavigationProperty Name="MachinesInUse1" Relationship="Self.FK_MachinesInUse_AspNetUsers_CreatedBy" FromRole="AspNetUsers" ToRole="MachinesInUse" />
-          <NavigationProperty Name="MachinesInUse2" Relationship="Self.FK_MachinesInUse_AspNetUsers_ModifyBy" FromRole="AspNetUsers" ToRole="MachinesInUse" />
-          <NavigationProperty Name="Notes" Relationship="Self.FK_Notes_AspNetUsers_CreatedBy" FromRole="AspNetUsers" ToRole="Notes" />
-          <NavigationProperty Name="Notes1" Relationship="Self.FK_Notes_AspNetUsers_ModifyBy" FromRole="AspNetUsers" ToRole="Notes" />
-          <NavigationProperty Name="RecordList" Relationship="Self.FK_RecordList_AspNetUsers_CreatedBy" FromRole="AspNetUsers" ToRole="RecordList" />
-          <NavigationProperty Name="RecordList1" Relationship="Self.FK_RecordList_AspNetUsers_ModifyBy" FromRole="AspNetUsers" ToRole="RecordList" />
-          <NavigationProperty Name="RecordType" Relationship="Self.FK_RecordType_AspNetUsers_CreatedBy" FromRole="AspNetUsers" ToRole="RecordType" />
-          <NavigationProperty Name="RecordType1" Relationship="Self.FK_RecordType_AspNetUsers_ModifiedBy" FromRole="AspNetUsers" ToRole="RecordType" />
-          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AppUsers" Relationship="TardiRecordsModel.FK_AppUsers_AspNetUsers" FromRole="AspNetUsers" ToRole="AppUsers" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="TardiRecordsModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="TardiRecordsModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
+          <NavigationProperty Name="BackupLocations" Relationship="TardiRecordsModel.FK_BackupLocations_AspNetUsers_CreatedBy" FromRole="AspNetUsers" ToRole="BackupLocations" />
+          <NavigationProperty Name="BackupLocations1" Relationship="TardiRecordsModel.FK_BackupLocations_AspNetUsers_ModifyBy" FromRole="AspNetUsers" ToRole="BackupLocations" />
+          <NavigationProperty Name="DBs" Relationship="TardiRecordsModel.FK_DBs_AspNetUsers_CreatedBy" FromRole="AspNetUsers" ToRole="DBs" />
+          <NavigationProperty Name="DBs1" Relationship="TardiRecordsModel.FK_DBs_AspNetUsers_ModifyBy" FromRole="AspNetUsers" ToRole="DBs" />
+          <NavigationProperty Name="Files" Relationship="TardiRecordsModel.FK_Files_AspNetUsers_CreatedBy" FromRole="AspNetUsers" ToRole="Files" />
+          <NavigationProperty Name="Files1" Relationship="TardiRecordsModel.FK_Files_AspNetUsers_ModifyBy" FromRole="AspNetUsers" ToRole="Files" />
+          <NavigationProperty Name="Machine" Relationship="TardiRecordsModel.FK_Machine_AspNetUsers_CreatedBy" FromRole="AspNetUsers" ToRole="Machine" />
+          <NavigationProperty Name="Machine1" Relationship="TardiRecordsModel.FK_Machine_AspNetUsers_ModifyBy" FromRole="AspNetUsers" ToRole="Machine" />
+          <NavigationProperty Name="MachinesInUse" Relationship="TardiRecordsModel.FK_MachinesInUse_AspNetUsers" FromRole="AspNetUsers" ToRole="MachinesInUse" />
+          <NavigationProperty Name="MachinesInUse1" Relationship="TardiRecordsModel.FK_MachinesInUse_AspNetUsers_CreatedBy" FromRole="AspNetUsers" ToRole="MachinesInUse" />
+          <NavigationProperty Name="MachinesInUse2" Relationship="TardiRecordsModel.FK_MachinesInUse_AspNetUsers_ModifyBy" FromRole="AspNetUsers" ToRole="MachinesInUse" />
+          <NavigationProperty Name="Notes" Relationship="TardiRecordsModel.FK_Notes_AspNetUsers_CreatedBy" FromRole="AspNetUsers" ToRole="Notes" />
+          <NavigationProperty Name="Notes1" Relationship="TardiRecordsModel.FK_Notes_AspNetUsers_ModifyBy" FromRole="AspNetUsers" ToRole="Notes" />
+          <NavigationProperty Name="RecordList" Relationship="TardiRecordsModel.FK_RecordList_AspNetUsers_CreatedBy" FromRole="AspNetUsers" ToRole="RecordList" />
+          <NavigationProperty Name="RecordList1" Relationship="TardiRecordsModel.FK_RecordList_AspNetUsers_ModifyBy" FromRole="AspNetUsers" ToRole="RecordList" />
+          <NavigationProperty Name="RecordType" Relationship="TardiRecordsModel.FK_RecordType_AspNetUsers_CreatedBy" FromRole="AspNetUsers" ToRole="RecordType" />
+          <NavigationProperty Name="RecordType1" Relationship="TardiRecordsModel.FK_RecordType_AspNetUsers_ModifiedBy" FromRole="AspNetUsers" ToRole="RecordType" />
+          <NavigationProperty Name="AspNetRoles" Relationship="TardiRecordsModel.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
         </EntityType>
         <EntityType Name="BackupLocations">
           <Key>
@@ -767,14 +945,14 @@
           <Property Name="id" Type="Guid" Nullable="false" />
           <Property Name="machineId" Type="Guid" Nullable="false" />
           <Property Name="dbId" Type="Guid" Nullable="false" />
-          <Property Name="createdBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="createdBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="createdDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="modifyBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="modifyBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_BackupLocations_AspNetUsers_CreatedBy" FromRole="BackupLocations" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_BackupLocations_AspNetUsers_ModifyBy" FromRole="BackupLocations" ToRole="AspNetUsers" />
-          <NavigationProperty Name="DBs" Relationship="Self.FK_BackupLocations_DBs" FromRole="BackupLocations" ToRole="DBs" />
-          <NavigationProperty Name="Machine" Relationship="Self.FK_BackupLocations_Machine" FromRole="BackupLocations" ToRole="Machine" />
+          <NavigationProperty Name="AspNetUsers" Relationship="TardiRecordsModel.FK_BackupLocations_AspNetUsers_CreatedBy" FromRole="BackupLocations" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="TardiRecordsModel.FK_BackupLocations_AspNetUsers_ModifyBy" FromRole="BackupLocations" ToRole="AspNetUsers" />
+          <NavigationProperty Name="DBs" Relationship="TardiRecordsModel.FK_BackupLocations_DBs" FromRole="BackupLocations" ToRole="DBs" />
+          <NavigationProperty Name="Machine" Relationship="TardiRecordsModel.FK_BackupLocations_Machine" FromRole="BackupLocations" ToRole="Machine" />
         </EntityType>
         <EntityType Name="DBs">
           <Key>
@@ -785,55 +963,55 @@
           <Property Name="isActive" Type="Boolean" Nullable="false" />
           <Property Name="isBackup" Type="Boolean" Nullable="false" />
           <Property Name="isArchived" Type="Boolean" Nullable="false" />
-          <Property Name="phisicalPath" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phisicalPath" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="sqlType" Type="Int32" Nullable="false" />
           <Property Name="sqlVersion" Type="Int32" Nullable="false" />
-          <Property Name="createdBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="createdBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="createdDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="modifyBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="modifyBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_DBs_AspNetUsers_CreatedBy" FromRole="DBs" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_DBs_AspNetUsers_ModifyBy" FromRole="DBs" ToRole="AspNetUsers" />
-          <NavigationProperty Name="BackupLocations" Relationship="Self.FK_BackupLocations_DBs" FromRole="DBs" ToRole="BackupLocations" />
+          <NavigationProperty Name="AspNetUsers" Relationship="TardiRecordsModel.FK_DBs_AspNetUsers_CreatedBy" FromRole="DBs" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="TardiRecordsModel.FK_DBs_AspNetUsers_ModifyBy" FromRole="DBs" ToRole="AspNetUsers" />
+          <NavigationProperty Name="BackupLocations" Relationship="TardiRecordsModel.FK_BackupLocations_DBs" FromRole="DBs" ToRole="BackupLocations" />
         </EntityType>
         <EntityType Name="Files">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Guid" Nullable="false" />
-          <Property Name="fullName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="path" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="createdBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="fullName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="path" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="createdBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="createdDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="modifyBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="modifyBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="recordsListId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_Files_AspNetUsers_CreatedBy" FromRole="Files" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_Files_AspNetUsers_ModifyBy" FromRole="Files" ToRole="AspNetUsers" />
-          <NavigationProperty Name="RecordList" Relationship="Self.FK_Files_RecordList" FromRole="Files" ToRole="RecordList" />
+          <NavigationProperty Name="AspNetUsers" Relationship="TardiRecordsModel.FK_Files_AspNetUsers_CreatedBy" FromRole="Files" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="TardiRecordsModel.FK_Files_AspNetUsers_ModifyBy" FromRole="Files" ToRole="AspNetUsers" />
+          <NavigationProperty Name="RecordList" Relationship="TardiRecordsModel.FK_Files_RecordList" FromRole="Files" ToRole="RecordList" />
         </EntityType>
         <EntityType Name="Machine">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Guid" Nullable="false" />
-          <Property Name="name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="purpose" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="UID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="purpose" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="isActive" Type="Boolean" Nullable="false" />
           <Property Name="isBroken" Type="Boolean" Nullable="false" />
           <Property Name="purchaseDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="officeLocation" Type="Int32" />
           <Property Name="subType" Type="Int32" />
-          <Property Name="createdBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="createdBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="createdDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="modifyBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="modifyBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_Machine_AspNetUsers_CreatedBy" FromRole="Machine" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_Machine_AspNetUsers_ModifyBy" FromRole="Machine" ToRole="AspNetUsers" />
-          <NavigationProperty Name="BackupLocations" Relationship="Self.FK_BackupLocations_Machine" FromRole="Machine" ToRole="BackupLocations" />
-          <NavigationProperty Name="MachinesInUse" Relationship="Self.FK_MachinesInUse_Machine" FromRole="Machine" ToRole="MachinesInUse" />
-          <NavigationProperty Name="Notes" Relationship="Self.FK_Notes_Machine" FromRole="Machine" ToRole="Notes" />
+          <NavigationProperty Name="AspNetUsers" Relationship="TardiRecordsModel.FK_Machine_AspNetUsers_CreatedBy" FromRole="Machine" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="TardiRecordsModel.FK_Machine_AspNetUsers_ModifyBy" FromRole="Machine" ToRole="AspNetUsers" />
+          <NavigationProperty Name="BackupLocations" Relationship="TardiRecordsModel.FK_BackupLocations_Machine" FromRole="Machine" ToRole="BackupLocations" />
+          <NavigationProperty Name="MachinesInUse" Relationship="TardiRecordsModel.FK_MachinesInUse_Machine" FromRole="Machine" ToRole="MachinesInUse" />
+          <NavigationProperty Name="Notes" Relationship="TardiRecordsModel.FK_Notes_Machine" FromRole="Machine" ToRole="Notes" />
         </EntityType>
         <EntityType Name="MachinesInUse">
           <Key>
@@ -841,73 +1019,86 @@
           </Key>
           <Property Name="id" Type="Guid" Nullable="false" />
           <Property Name="machineId" Type="Guid" Nullable="false" />
-          <Property Name="userid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="userid" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="dateFrom" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="dateTo" Type="DateTime" Precision="3" />
           <Property Name="notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="createdBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="createdBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="createdDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="modifyBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="modifyBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_MachinesInUse_AspNetUsers" FromRole="MachinesInUse" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_MachinesInUse_AspNetUsers_CreatedBy" FromRole="MachinesInUse" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers2" Relationship="Self.FK_MachinesInUse_AspNetUsers_ModifyBy" FromRole="MachinesInUse" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Machine" Relationship="Self.FK_MachinesInUse_Machine" FromRole="MachinesInUse" ToRole="Machine" />
+          <NavigationProperty Name="AspNetUsers" Relationship="TardiRecordsModel.FK_MachinesInUse_AspNetUsers" FromRole="MachinesInUse" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="TardiRecordsModel.FK_MachinesInUse_AspNetUsers_CreatedBy" FromRole="MachinesInUse" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers2" Relationship="TardiRecordsModel.FK_MachinesInUse_AspNetUsers_ModifyBy" FromRole="MachinesInUse" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Machine" Relationship="TardiRecordsModel.FK_MachinesInUse_Machine" FromRole="MachinesInUse" ToRole="Machine" />
         </EntityType>
         <EntityType Name="Notes">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Guid" Nullable="false" />
-          <Property Name="noteText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="noteText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="isAlert" Type="Boolean" Nullable="false" />
-          <Property Name="createdBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="createdBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="createdDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="modifyBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="modifyBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="recordListId" Type="Guid" />
           <Property Name="machineId" Type="Guid" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_Notes_AspNetUsers_CreatedBy" FromRole="Notes" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_Notes_AspNetUsers_ModifyBy" FromRole="Notes" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Machine" Relationship="Self.FK_Notes_Machine" FromRole="Notes" ToRole="Machine" />
-          <NavigationProperty Name="RecordList" Relationship="Self.FK_Notes_RecordList" FromRole="Notes" ToRole="RecordList" />
+          <NavigationProperty Name="AspNetUsers" Relationship="TardiRecordsModel.FK_Notes_AspNetUsers_CreatedBy" FromRole="Notes" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="TardiRecordsModel.FK_Notes_AspNetUsers_ModifyBy" FromRole="Notes" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Machine" Relationship="TardiRecordsModel.FK_Notes_Machine" FromRole="Notes" ToRole="Machine" />
+          <NavigationProperty Name="RecordList" Relationship="TardiRecordsModel.FK_Notes_RecordList" FromRole="Notes" ToRole="RecordList" />
         </EntityType>
         <EntityType Name="RecordList">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Guid" Nullable="false" />
-          <Property Name="title" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="createdBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="title" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="createdBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="createdDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="modifyBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="modifyBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="recordTypeId" Type="Guid" Nullable="false" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_RecordList_AspNetUsers_CreatedBy" FromRole="RecordList" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_RecordList_AspNetUsers_ModifyBy" FromRole="RecordList" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Files" Relationship="Self.FK_Files_RecordList" FromRole="RecordList" ToRole="Files" />
-          <NavigationProperty Name="Notes" Relationship="Self.FK_Notes_RecordList" FromRole="RecordList" ToRole="Notes" />
+          <NavigationProperty Name="AspNetUsers" Relationship="TardiRecordsModel.FK_RecordList_AspNetUsers_CreatedBy" FromRole="RecordList" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="TardiRecordsModel.FK_RecordList_AspNetUsers_ModifyBy" FromRole="RecordList" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Files" Relationship="TardiRecordsModel.FK_Files_RecordList" FromRole="RecordList" ToRole="Files" />
+          <NavigationProperty Name="Notes" Relationship="TardiRecordsModel.FK_Notes_RecordList" FromRole="RecordList" ToRole="Notes" />
         </EntityType>
         <EntityType Name="RecordType">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Guid" Nullable="false" />
-          <Property Name="name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="subType" Type="Int32" Nullable="false" />
           <Property Name="isEnabled" Type="Boolean" Nullable="false" />
           <Property Name="isDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="createdBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="createdBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="createdDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="modifiedBy" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="modifiedBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="AllowedTypesForUser" Relationship="Self.FK_AllowedTypesForUser_RecordType" FromRole="RecordType" ToRole="AllowedTypesForUser" />
-          <NavigationProperty Name="AspNetUsers" Relationship="Self.FK_RecordType_AspNetUsers_CreatedBy" FromRole="RecordType" ToRole="AspNetUsers" />
-          <NavigationProperty Name="AspNetUsers1" Relationship="Self.FK_RecordType_AspNetUsers_ModifiedBy" FromRole="RecordType" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AllowedTypesForUser" Relationship="TardiRecordsModel.FK_AllowedTypesForUser_RecordType" FromRole="RecordType" ToRole="AllowedTypesForUser" />
+          <NavigationProperty Name="AspNetUsers" Relationship="TardiRecordsModel.FK_RecordType_AspNetUsers_CreatedBy" FromRole="RecordType" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUsers1" Relationship="TardiRecordsModel.FK_RecordType_AspNetUsers_ModifiedBy" FromRole="RecordType" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="vw_AllUsers">
+          <Key>
+            <PropertyRef Name="AspNetUserId" />
+            <PropertyRef Name="AppUserId" />
+            <PropertyRef Name="firstName" />
+            <PropertyRef Name="lastName" />
+          </Key>
+          <Property Name="AspNetUserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="AppUserId" Type="Guid" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="firstName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="lastName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_AllowedTypesForUser_RecordType">
-          <End Role="RecordType" Type="Self.RecordType" Multiplicity="1" />
-          <End Role="AllowedTypesForUser" Type="Self.AllowedTypesForUser" Multiplicity="*" />
+          <End Type="TardiRecordsModel.RecordType" Role="RecordType" Multiplicity="1" />
+          <End Type="TardiRecordsModel.AllowedTypesForUser" Role="AllowedTypesForUser" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="RecordType">
               <PropertyRef Name="id" />
@@ -917,11 +1108,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_AppUsers_AspNetUsers">
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="TardiRecordsModel.AppUsers" Role="AppUsers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AppUsers">
+              <PropertyRef Name="aspNetUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUserClaims" Role="AspNetUserClaims" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -932,10 +1135,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUserLogins" Role="AspNetUserLogins" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -946,8 +1149,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BackupLocations_AspNetUsers_CreatedBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="BackupLocations" Type="Self.BackupLocations" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="TardiRecordsModel.BackupLocations" Role="BackupLocations" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -958,8 +1161,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BackupLocations_AspNetUsers_ModifyBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="BackupLocations" Type="Self.BackupLocations" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="TardiRecordsModel.BackupLocations" Role="BackupLocations" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -970,8 +1173,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DBs_AspNetUsers_CreatedBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="DBs" Type="Self.DBs" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="TardiRecordsModel.DBs" Role="DBs" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -982,8 +1185,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DBs_AspNetUsers_ModifyBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="DBs" Type="Self.DBs" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="TardiRecordsModel.DBs" Role="DBs" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -994,8 +1197,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Files_AspNetUsers_CreatedBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="Files" Type="Self.Files" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="TardiRecordsModel.Files" Role="Files" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -1006,8 +1209,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Files_AspNetUsers_ModifyBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="Files" Type="Self.Files" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="TardiRecordsModel.Files" Role="Files" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -1018,8 +1221,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Machine_AspNetUsers_CreatedBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="Machine" Type="Self.Machine" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="TardiRecordsModel.Machine" Role="Machine" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -1030,8 +1233,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Machine_AspNetUsers_ModifyBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="Machine" Type="Self.Machine" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="TardiRecordsModel.Machine" Role="Machine" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -1042,8 +1245,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MachinesInUse_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="MachinesInUse" Type="Self.MachinesInUse" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="TardiRecordsModel.MachinesInUse" Role="MachinesInUse" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -1054,8 +1257,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MachinesInUse_AspNetUsers_CreatedBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="MachinesInUse" Type="Self.MachinesInUse" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="TardiRecordsModel.MachinesInUse" Role="MachinesInUse" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -1066,8 +1269,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MachinesInUse_AspNetUsers_ModifyBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="MachinesInUse" Type="Self.MachinesInUse" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="TardiRecordsModel.MachinesInUse" Role="MachinesInUse" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -1078,8 +1281,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Notes_AspNetUsers_CreatedBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="Notes" Type="Self.Notes" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="TardiRecordsModel.Notes" Role="Notes" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -1090,8 +1293,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Notes_AspNetUsers_ModifyBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="Notes" Type="Self.Notes" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="TardiRecordsModel.Notes" Role="Notes" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -1102,8 +1305,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_RecordList_AspNetUsers_CreatedBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="RecordList" Type="Self.RecordList" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="TardiRecordsModel.RecordList" Role="RecordList" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -1114,8 +1317,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_RecordList_AspNetUsers_ModifyBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="RecordList" Type="Self.RecordList" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="TardiRecordsModel.RecordList" Role="RecordList" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -1126,8 +1329,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_RecordType_AspNetUsers_CreatedBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="RecordType" Type="Self.RecordType" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="TardiRecordsModel.RecordType" Role="RecordType" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -1138,8 +1341,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_RecordType_AspNetUsers_ModifiedBy">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="RecordType" Type="Self.RecordType" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="1" />
+          <End Type="TardiRecordsModel.RecordType" Role="RecordType" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -1150,8 +1353,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BackupLocations_DBs">
-          <End Role="DBs" Type="Self.DBs" Multiplicity="1" />
-          <End Role="BackupLocations" Type="Self.BackupLocations" Multiplicity="*" />
+          <End Type="TardiRecordsModel.DBs" Role="DBs" Multiplicity="1" />
+          <End Type="TardiRecordsModel.BackupLocations" Role="BackupLocations" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="DBs">
               <PropertyRef Name="id" />
@@ -1162,8 +1365,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BackupLocations_Machine">
-          <End Role="Machine" Type="Self.Machine" Multiplicity="1" />
-          <End Role="BackupLocations" Type="Self.BackupLocations" Multiplicity="*" />
+          <End Type="TardiRecordsModel.Machine" Role="Machine" Multiplicity="1" />
+          <End Type="TardiRecordsModel.BackupLocations" Role="BackupLocations" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Machine">
               <PropertyRef Name="id" />
@@ -1174,8 +1377,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Files_RecordList">
-          <End Role="RecordList" Type="Self.RecordList" Multiplicity="1" />
-          <End Role="Files" Type="Self.Files" Multiplicity="*" />
+          <End Type="TardiRecordsModel.RecordList" Role="RecordList" Multiplicity="1" />
+          <End Type="TardiRecordsModel.Files" Role="Files" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="RecordList">
               <PropertyRef Name="id" />
@@ -1186,8 +1389,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_MachinesInUse_Machine">
-          <End Role="Machine" Type="Self.Machine" Multiplicity="1" />
-          <End Role="MachinesInUse" Type="Self.MachinesInUse" Multiplicity="*" />
+          <End Type="TardiRecordsModel.Machine" Role="Machine" Multiplicity="1" />
+          <End Type="TardiRecordsModel.MachinesInUse" Role="MachinesInUse" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Machine">
               <PropertyRef Name="id" />
@@ -1198,8 +1401,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Notes_Machine">
-          <End Role="Machine" Type="Self.Machine" Multiplicity="0..1" />
-          <End Role="Notes" Type="Self.Notes" Multiplicity="*" />
+          <End Type="TardiRecordsModel.Machine" Role="Machine" Multiplicity="0..1" />
+          <End Type="TardiRecordsModel.Notes" Role="Notes" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Machine">
               <PropertyRef Name="id" />
@@ -1210,8 +1413,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Notes_RecordList">
-          <End Role="RecordList" Type="Self.RecordList" Multiplicity="0..1" />
-          <End Role="Notes" Type="Self.Notes" Multiplicity="*" />
+          <End Type="TardiRecordsModel.RecordList" Role="RecordList" Multiplicity="0..1" />
+          <End Type="TardiRecordsModel.Notes" Role="Notes" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="RecordList">
               <PropertyRef Name="id" />
@@ -1222,336 +1425,228 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="AspNetUserRoles">
-          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="*" />
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetRoles" Role="AspNetRoles" Multiplicity="*" />
+          <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="TardiRecordsEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
-          <EntitySet Name="AllowedTypesForUser" EntityType="Self.AllowedTypesForUser" />
-          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" />
-          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" />
-          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" />
-          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" />
-          <EntitySet Name="BackupLocations" EntityType="Self.BackupLocations" />
-          <EntitySet Name="DBs" EntityType="Self.DBs" />
-          <EntitySet Name="Files" EntityType="Self.Files" />
-          <EntitySet Name="Machine" EntityType="Self.Machine" />
-          <EntitySet Name="MachinesInUse" EntityType="Self.MachinesInUse" />
-          <EntitySet Name="Notes" EntityType="Self.Notes" />
-          <EntitySet Name="RecordList" EntityType="Self.RecordList" />
-          <EntitySet Name="RecordType" EntityType="Self.RecordType" />
-          <AssociationSet Name="FK_AllowedTypesForUser_RecordType" Association="Self.FK_AllowedTypesForUser_RecordType">
-            <End Role="RecordType" EntitySet="RecordType" />
-            <End Role="AllowedTypesForUser" EntitySet="AllowedTypesForUser" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BackupLocations_AspNetUsers_CreatedBy" Association="Self.FK_BackupLocations_AspNetUsers_CreatedBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="BackupLocations" EntitySet="BackupLocations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BackupLocations_AspNetUsers_ModifyBy" Association="Self.FK_BackupLocations_AspNetUsers_ModifyBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="BackupLocations" EntitySet="BackupLocations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DBs_AspNetUsers_CreatedBy" Association="Self.FK_DBs_AspNetUsers_CreatedBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="DBs" EntitySet="DBs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DBs_AspNetUsers_ModifyBy" Association="Self.FK_DBs_AspNetUsers_ModifyBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="DBs" EntitySet="DBs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Files_AspNetUsers_CreatedBy" Association="Self.FK_Files_AspNetUsers_CreatedBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Files" EntitySet="Files" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Files_AspNetUsers_ModifyBy" Association="Self.FK_Files_AspNetUsers_ModifyBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Files" EntitySet="Files" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Machine_AspNetUsers_CreatedBy" Association="Self.FK_Machine_AspNetUsers_CreatedBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Machine" EntitySet="Machine" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Machine_AspNetUsers_ModifyBy" Association="Self.FK_Machine_AspNetUsers_ModifyBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Machine" EntitySet="Machine" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MachinesInUse_AspNetUsers" Association="Self.FK_MachinesInUse_AspNetUsers">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="MachinesInUse" EntitySet="MachinesInUse" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MachinesInUse_AspNetUsers_CreatedBy" Association="Self.FK_MachinesInUse_AspNetUsers_CreatedBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="MachinesInUse" EntitySet="MachinesInUse" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MachinesInUse_AspNetUsers_ModifyBy" Association="Self.FK_MachinesInUse_AspNetUsers_ModifyBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="MachinesInUse" EntitySet="MachinesInUse" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Notes_AspNetUsers_CreatedBy" Association="Self.FK_Notes_AspNetUsers_CreatedBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Notes" EntitySet="Notes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Notes_AspNetUsers_ModifyBy" Association="Self.FK_Notes_AspNetUsers_ModifyBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Notes" EntitySet="Notes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RecordList_AspNetUsers_CreatedBy" Association="Self.FK_RecordList_AspNetUsers_CreatedBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="RecordList" EntitySet="RecordList" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RecordList_AspNetUsers_ModifyBy" Association="Self.FK_RecordList_AspNetUsers_ModifyBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="RecordList" EntitySet="RecordList" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RecordType_AspNetUsers_CreatedBy" Association="Self.FK_RecordType_AspNetUsers_CreatedBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="RecordType" EntitySet="RecordType" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RecordType_AspNetUsers_ModifiedBy" Association="Self.FK_RecordType_AspNetUsers_ModifiedBy">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="RecordType" EntitySet="RecordType" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BackupLocations_DBs" Association="Self.FK_BackupLocations_DBs">
-            <End Role="DBs" EntitySet="DBs" />
-            <End Role="BackupLocations" EntitySet="BackupLocations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BackupLocations_Machine" Association="Self.FK_BackupLocations_Machine">
-            <End Role="Machine" EntitySet="Machine" />
-            <End Role="BackupLocations" EntitySet="BackupLocations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Files_RecordList" Association="Self.FK_Files_RecordList">
-            <End Role="RecordList" EntitySet="RecordList" />
-            <End Role="Files" EntitySet="Files" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MachinesInUse_Machine" Association="Self.FK_MachinesInUse_Machine">
-            <End Role="Machine" EntitySet="Machine" />
-            <End Role="MachinesInUse" EntitySet="MachinesInUse" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Notes_Machine" Association="Self.FK_Notes_Machine">
-            <End Role="Machine" EntitySet="Machine" />
-            <End Role="Notes" EntitySet="Notes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Notes_RecordList" Association="Self.FK_Notes_RecordList">
-            <End Role="RecordList" EntitySet="RecordList" />
-            <End Role="Notes" EntitySet="Notes" />
-          </AssociationSet>
-          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
-            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="TardiRecordsModelStoreContainer" CdmEntityContainer="TardiRecordsEntities">
-          <EntitySetMapping Name="C__MigrationHistory">
-            <EntityTypeMapping TypeName="TardiRecordsModel.C__MigrationHistory">
-              <MappingFragment StoreEntitySet="__MigrationHistory">
-                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
-                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
-                <ScalarProperty Name="Model" ColumnName="Model" />
-                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AllowedTypesForUser">
             <EntityTypeMapping TypeName="TardiRecordsModel.AllowedTypesForUser">
               <MappingFragment StoreEntitySet="AllowedTypesForUser">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="recordTypeId" ColumnName="recordTypeId" />
-                <ScalarProperty Name="userId" ColumnName="userId" />
-                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
-                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
-                <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
                 <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+                <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="recordTypeId" ColumnName="recordTypeId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AppUsers">
+            <EntityTypeMapping TypeName="TardiRecordsModel.AppUsers">
+              <MappingFragment StoreEntitySet="AppUsers">
+                <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+                <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="aspNetUserId" ColumnName="aspNetUserId" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetRoles">
             <EntityTypeMapping TypeName="TardiRecordsModel.AspNetRoles">
               <MappingFragment StoreEntitySet="AspNetRoles">
-                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserClaims">
             <EntityTypeMapping TypeName="TardiRecordsModel.AspNetUserClaims">
               <MappingFragment StoreEntitySet="AspNetUserClaims">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
                 <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserLogins">
             <EntityTypeMapping TypeName="TardiRecordsModel.AspNetUserLogins">
               <MappingFragment StoreEntitySet="AspNetUserLogins">
-                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
-                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="TardiRecordsModel.AspNetUsers">
               <MappingFragment StoreEntitySet="AspNetUsers">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
-                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
-                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
-                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
-                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
-                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BackupLocations">
             <EntityTypeMapping TypeName="TardiRecordsModel.BackupLocations">
               <MappingFragment StoreEntitySet="BackupLocations">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="machineId" ColumnName="machineId" />
-                <ScalarProperty Name="dbId" ColumnName="dbId" />
-                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
-                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
-                <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
                 <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+                <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+                <ScalarProperty Name="dbId" ColumnName="dbId" />
+                <ScalarProperty Name="machineId" ColumnName="machineId" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DBs">
             <EntityTypeMapping TypeName="TardiRecordsModel.DBs">
               <MappingFragment StoreEntitySet="DBs">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="recordListId" ColumnName="recordListId" />
-                <ScalarProperty Name="isActive" ColumnName="isActive" />
-                <ScalarProperty Name="isBackup" ColumnName="isBackup" />
-                <ScalarProperty Name="isArchived" ColumnName="isArchived" />
-                <ScalarProperty Name="phisicalPath" ColumnName="phisicalPath" />
-                <ScalarProperty Name="sqlType" ColumnName="sqlType" />
-                <ScalarProperty Name="sqlVersion" ColumnName="sqlVersion" />
-                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
-                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
-                <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
                 <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+                <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+                <ScalarProperty Name="sqlVersion" ColumnName="sqlVersion" />
+                <ScalarProperty Name="sqlType" ColumnName="sqlType" />
+                <ScalarProperty Name="phisicalPath" ColumnName="phisicalPath" />
+                <ScalarProperty Name="isArchived" ColumnName="isArchived" />
+                <ScalarProperty Name="isBackup" ColumnName="isBackup" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="recordListId" ColumnName="recordListId" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Files">
             <EntityTypeMapping TypeName="TardiRecordsModel.Files">
               <MappingFragment StoreEntitySet="Files">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="fullName" ColumnName="fullName" />
-                <ScalarProperty Name="path" ColumnName="path" />
-                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
-                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
-                <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
-                <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
                 <ScalarProperty Name="recordsListId" ColumnName="recordsListId" />
+                <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+                <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+                <ScalarProperty Name="path" ColumnName="path" />
+                <ScalarProperty Name="fullName" ColumnName="fullName" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Machine">
             <EntityTypeMapping TypeName="TardiRecordsModel.Machine">
               <MappingFragment StoreEntitySet="Machine">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="UID" ColumnName="UID" />
-                <ScalarProperty Name="purpose" ColumnName="purpose" />
-                <ScalarProperty Name="isActive" ColumnName="isActive" />
-                <ScalarProperty Name="isBroken" ColumnName="isBroken" />
-                <ScalarProperty Name="purchaseDate" ColumnName="purchaseDate" />
-                <ScalarProperty Name="officeLocation" ColumnName="officeLocation" />
-                <ScalarProperty Name="subType" ColumnName="subType" />
-                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
-                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
-                <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
                 <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+                <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+                <ScalarProperty Name="subType" ColumnName="subType" />
+                <ScalarProperty Name="officeLocation" ColumnName="officeLocation" />
+                <ScalarProperty Name="purchaseDate" ColumnName="purchaseDate" />
+                <ScalarProperty Name="isBroken" ColumnName="isBroken" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="purpose" ColumnName="purpose" />
+                <ScalarProperty Name="UID" ColumnName="UID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MachinesInUse">
             <EntityTypeMapping TypeName="TardiRecordsModel.MachinesInUse">
               <MappingFragment StoreEntitySet="MachinesInUse">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="machineId" ColumnName="machineId" />
-                <ScalarProperty Name="userid" ColumnName="userid" />
-                <ScalarProperty Name="dateFrom" ColumnName="dateFrom" />
-                <ScalarProperty Name="dateTo" ColumnName="dateTo" />
-                <ScalarProperty Name="notes" ColumnName="notes" />
-                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
-                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
-                <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
                 <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+                <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+                <ScalarProperty Name="notes" ColumnName="notes" />
+                <ScalarProperty Name="dateTo" ColumnName="dateTo" />
+                <ScalarProperty Name="dateFrom" ColumnName="dateFrom" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="machineId" ColumnName="machineId" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Notes">
             <EntityTypeMapping TypeName="TardiRecordsModel.Notes">
               <MappingFragment StoreEntitySet="Notes">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="noteText" ColumnName="noteText" />
-                <ScalarProperty Name="isAlert" ColumnName="isAlert" />
-                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
-                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
-                <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
-                <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
-                <ScalarProperty Name="recordListId" ColumnName="recordListId" />
                 <ScalarProperty Name="machineId" ColumnName="machineId" />
+                <ScalarProperty Name="recordListId" ColumnName="recordListId" />
+                <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+                <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+                <ScalarProperty Name="isAlert" ColumnName="isAlert" />
+                <ScalarProperty Name="noteText" ColumnName="noteText" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RecordList">
             <EntityTypeMapping TypeName="TardiRecordsModel.RecordList">
               <MappingFragment StoreEntitySet="RecordList">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="title" ColumnName="title" />
-                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
-                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
-                <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
-                <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
                 <ScalarProperty Name="recordTypeId" ColumnName="recordTypeId" />
+                <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+                <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RecordType">
             <EntityTypeMapping TypeName="TardiRecordsModel.RecordType">
               <MappingFragment StoreEntitySet="RecordType">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="subType" ColumnName="subType" />
-                <ScalarProperty Name="isEnabled" ColumnName="isEnabled" />
-                <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
-                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
-                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
-                <ScalarProperty Name="modifiedBy" ColumnName="modifiedBy" />
                 <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+                <ScalarProperty Name="modifiedBy" ColumnName="modifiedBy" />
+                <ScalarProperty Name="createdDate" ColumnName="createdDate" />
+                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+                <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+                <ScalarProperty Name="isEnabled" ColumnName="isEnabled" />
+                <ScalarProperty Name="subType" ColumnName="subType" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_AllUsers">
+            <EntityTypeMapping TypeName="TardiRecordsModel.vw_AllUsers">
+              <MappingFragment StoreEntitySet="vw_AllUsers">
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="AppUserId" ColumnName="AppUserId" />
+                <ScalarProperty Name="AspNetUserId" ColumnName="AspNetUserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <AssociationSetMapping Name="AspNetUserRoles" TypeName="TardiRecordsModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
-            <EndProperty Name="AspNetRoles">
-              <ScalarProperty Name="Id" ColumnName="RoleId" />
-            </EndProperty>
             <EndProperty Name="AspNetUsers">
               <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="AspNetRoles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

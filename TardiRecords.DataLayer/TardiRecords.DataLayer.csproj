@@ -52,6 +52,9 @@
     <Compile Include="AllowedTypesForUser.cs">
       <DependentUpon>TardiRecordsEDM.tt</DependentUpon>
     </Compile>
+    <Compile Include="AppUsers.cs">
+      <DependentUpon>TardiRecordsEDM.tt</DependentUpon>
+    </Compile>
     <Compile Include="AspNetRoles.cs">
       <DependentUpon>TardiRecordsEDM.tt</DependentUpon>
     </Compile>
@@ -65,9 +68,6 @@
       <DependentUpon>TardiRecordsEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="BackupLocations.cs">
-      <DependentUpon>TardiRecordsEDM.tt</DependentUpon>
-    </Compile>
-    <Compile Include="C__MigrationHistory.cs">
       <DependentUpon>TardiRecordsEDM.tt</DependentUpon>
     </Compile>
     <Compile Include="DBs.cs">
@@ -106,6 +106,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TardiRecordsEDM.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="vw_AllUsers.cs">
+      <DependentUpon>TardiRecordsEDM.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
