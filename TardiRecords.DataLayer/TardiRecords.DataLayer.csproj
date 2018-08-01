@@ -110,6 +110,9 @@
     <Compile Include="vw_AllUsers.cs">
       <DependentUpon>TardiRecordsEDM.tt</DependentUpon>
     </Compile>
+    <Compile Include="vw_RecordListDetails.cs">
+      <DependentUpon>TardiRecordsEDM.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />

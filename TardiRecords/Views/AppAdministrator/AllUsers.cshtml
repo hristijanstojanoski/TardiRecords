@@ -3,6 +3,98 @@
     ViewBag.Title = "AllUsers";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script src="~/AngularScripts/AppAdministrator/AllUsers.js"></script>
+<h2>All Users</h2>
 
-<h2>AllUsers</h2>
+<div ng-controller="AllUsersController as usrCtrl">
+    <div ng-show="!initData.Success.IsSuccess" class="masterColorBackgroundRed">
+        <p><b>Error occured!</b></p>
+        <p>{{initData.Success.Message}}</p>
+    </div>
+    <br />
+    <div ng-show="showNewRecordDiv">
+        <form name="usrCtrl.NewUser">
+            <table>
+                <tr>
+                    <td>
+                        First Name:
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" ng-model="newRecord.firstName" required />
+                    </td>
+                    <td>
+                        Last Name:
+                    </td>
+                    <td>
+                        <input type="text" class="form-control"ng-model="newRecord.lastName"  required />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Email:
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" name="eMail" ng-model="newRecord.emailAddress"  ng-pattern="emailPattern" required />
+                        <span ng-show="usrCtrl.NewUser.eMail.$invalid && !usrCtrl.NewUser.eMail.$pristine" class="masterColorTextRed">Enter valid e-mail.</span>
+                    </td>
+                    <td>
+                        Position:
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" ng-model="newRecord.position"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="3">
+                        <input type="button" value="Save" ng-disabled="usrCtrl.NewUser.$invalid" class="btn dAddItemRelativeWidth masterColorBackgroundRed text-white" ng-click="addNewRecord()" />
+                        <input type="button" value="Cancel" class="btn dAddItemRelativeWidth dBackgroundColorWhite masterColorTextRed" ng-click="showNewRecordDiv=!showNewRecordDiv" />
+                    </td>
 
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="text-right" ng-show="!showNewRecordDiv">
+        <button type="button" class="btn dAddItemRelativeWidth masterColorBackgroundRed text-white" ng-click="showNewRecordDiv=!showNewRecordDiv">
+            <div class="etObjectsInline">
+                <span>
+                    <i class="fa fa-plus text-white"></i>
+                </span>
+                Add User
+            </div>
+        </button>
+    </div>
+    <br/>
+    <div>
+        <table class="dTableMainWidth">
+            <tr class="dTableBBheader">
+                <td><span class="dHideMe">AppUserId</span></td>
+                <td><span class="dHideMe">AspNetUserId</span></td>
+                <td>Username</td>
+                <td>First Name</td>
+                <td>Last Name</td>
+                <td>Position</td>
+                <td>Last Changes</td>
+                <td></td>
+            </tr>
+            <tr class="dTableBBsimple" ng-repeat="ap in initData.AllUsers">
+                <td><span class="dHideMe">{{ap.AppUserId}}</span></td>
+                <td><span class="dHideMe">{{ap.AspNetUserId}}</span></td>
+                <td>{{ap.Email}}</td>
+                <td>{{ap.FirstName}}</td>
+                <td>{{ap.LastName}}</td>
+                <td>{{ap.Position}}</td>
+                <td>
+                    {{ap.LastChangedBy}}<br/>
+                    {{showFriendlyDate(ap.LastChangedOn)}}
+                </td>
+                <td>
+                    <span ng-show="ap.IsLocked" title="User is locked and can't login'. Click to unlock."><i class="masterColorTextRed fa fa-lock" ng-click="lockOrUnlockUser(ap.AspNetUserId)"></i></span>
+                    <span ng-show="!ap.IsLocked" title="User can login an use the application. Click to disable it"><i class="masterColorTextRed fa fa-unlock" ng-click="lockOrUnlockUser(ap.AspNetUserId)"></i></span>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+</div>

@@ -204,6 +204,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AngularScripts\App.js" />
+    <Content Include="AngularScripts\AppAdministrator\AllUsers.js" />
     <Content Include="AngularScripts\AppAdministrator\Index.js" />
     <Content Include="AngularScripts\AppAdministrator\RecordTypes.js" />
     <Content Include="AngularScripts\Service.js" />

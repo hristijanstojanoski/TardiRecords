@@ -49,10 +49,12 @@
   <ItemGroup>
     <Compile Include="DataModels\RecordTypeDM.cs" />
     <Compile Include="DataModels\RecordTypeTableViewDM.cs" />
+    <Compile Include="DataModels\UsersDM.cs" />
     <Compile Include="DataServices\AppAdministrator\AppAdministratorDMM.cs" />
     <Compile Include="DataViewModels\EnumDropdownListVM.cs" />
     <Compile Include="DataViewModels\RecordTypeNgVM.cs" />
     <Compile Include="DataViewModels\RecordTypeVM.cs" />
+    <Compile Include="DataViewModels\UsersNgVM.cs" />
     <Compile Include="Enums\RecordSubTypeEnum.cs" />
     <Compile Include="Helpers\ActionHandler.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
