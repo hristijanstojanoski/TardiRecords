@@ -19,5 +19,9 @@ namespace TardiRecords.DataLayer
         public string Email { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
+        public string position { get; set; }
+        public System.DateTime modifyDate { get; set; }
+        public bool LockoutEnabled { get; set; }
+        public string EditedBy { get; set; }
     }
 }

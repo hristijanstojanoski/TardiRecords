@@ -40,5 +40,6 @@ namespace TardiRecords.DataLayer
         public virtual DbSet<RecordList> RecordList { get; set; }
         public virtual DbSet<RecordType> RecordType { get; set; }
         public virtual DbSet<vw_AllUsers> vw_AllUsers { get; set; }
+        public virtual DbSet<vw_RecordListDetails> vw_RecordListDetails { get; set; }
     }
 }

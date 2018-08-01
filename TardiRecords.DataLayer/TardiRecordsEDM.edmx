@@ -205,12 +205,72 @@ warning 6002: The table/view 'TardiRecords.dbo.vw_AllUsers' does not have a prim
             <PropertyRef Name="AppUserId" />
             <PropertyRef Name="firstName" />
             <PropertyRef Name="lastName" />
+            <PropertyRef Name="modifyDate" />
+            <PropertyRef Name="LockoutEnabled" />
           </Key>
           <Property Name="AspNetUserId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="AppUserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="256" />
           <Property Name="firstName" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="lastName" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="position" Type="nvarchar" MaxLength="250" />
+          <Property Name="modifyDate" Type="datetime" Nullable="false" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="EditedBy" Type="nvarchar" MaxLength="401" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'TardiRecords.dbo.vw_RecordListDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vw_RecordListDetails">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="BackupLocationsId" />
+            <PropertyRef Name="FilesId" />
+            <PropertyRef Name="NotesId" />
+            <PropertyRef Name="Dbid" />
+            <PropertyRef Name="title" />
+            <PropertyRef Name="fullName" />
+            <PropertyRef Name="path" />
+            <PropertyRef Name="modifyDate" />
+            <PropertyRef Name="noteText" />
+            <PropertyRef Name="createdBy" />
+            <PropertyRef Name="isActive" />
+            <PropertyRef Name="isBackup" />
+            <PropertyRef Name="isArchived" />
+            <PropertyRef Name="phisicalPath" />
+            <PropertyRef Name="sqlType" />
+            <PropertyRef Name="sqlVersion" />
+            <PropertyRef Name="modifyBy" />
+            <PropertyRef Name="Expr5" />
+            <PropertyRef Name="Expr6" />
+            <PropertyRef Name="Expr7" />
+            <PropertyRef Name="Expr8" />
+            <PropertyRef Name="Expr9" />
+            <PropertyRef Name="Expr10" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="BackupLocationsId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="FilesId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="NotesId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Dbid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="fullName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="path" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="modifyDate" Type="datetime" Nullable="false" />
+          <Property Name="noteText" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="createdBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="isBackup" Type="bit" Nullable="false" />
+          <Property Name="isArchived" Type="bit" Nullable="false" />
+          <Property Name="phisicalPath" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="sqlType" Type="int" Nullable="false" />
+          <Property Name="sqlVersion" Type="int" Nullable="false" />
+          <Property Name="modifyBy" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Expr5" Type="datetime" Nullable="false" />
+          <Property Name="Expr6" Type="datetime" Nullable="false" />
+          <Property Name="Expr7" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Expr8" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Expr9" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Expr10" Type="datetime" Nullable="false" />
         </EntityType>
         <Association Name="FK_AllowedTypesForUser_RecordType">
           <End Role="RecordType" Type="Self.RecordType" Multiplicity="1" />
@@ -590,8 +650,40 @@ warning 6002: The table/view 'TardiRecords.dbo.vw_AllUsers' does not have a prim
     [vw_AllUsers].[AppUserId] AS [AppUserId], 
     [vw_AllUsers].[Email] AS [Email], 
     [vw_AllUsers].[firstName] AS [firstName], 
-    [vw_AllUsers].[lastName] AS [lastName]
+    [vw_AllUsers].[lastName] AS [lastName], 
+    [vw_AllUsers].[position] AS [position], 
+    [vw_AllUsers].[modifyDate] AS [modifyDate], 
+    [vw_AllUsers].[LockoutEnabled] AS [LockoutEnabled], 
+    [vw_AllUsers].[EditedBy] AS [EditedBy]
     FROM [dbo].[vw_AllUsers] AS [vw_AllUsers]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vw_RecordListDetails" EntityType="Self.vw_RecordListDetails" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vw_RecordListDetails].[id] AS [id], 
+    [vw_RecordListDetails].[BackupLocationsId] AS [BackupLocationsId], 
+    [vw_RecordListDetails].[FilesId] AS [FilesId], 
+    [vw_RecordListDetails].[NotesId] AS [NotesId], 
+    [vw_RecordListDetails].[Dbid] AS [Dbid], 
+    [vw_RecordListDetails].[title] AS [title], 
+    [vw_RecordListDetails].[fullName] AS [fullName], 
+    [vw_RecordListDetails].[path] AS [path], 
+    [vw_RecordListDetails].[modifyDate] AS [modifyDate], 
+    [vw_RecordListDetails].[noteText] AS [noteText], 
+    [vw_RecordListDetails].[createdBy] AS [createdBy], 
+    [vw_RecordListDetails].[isActive] AS [isActive], 
+    [vw_RecordListDetails].[isBackup] AS [isBackup], 
+    [vw_RecordListDetails].[isArchived] AS [isArchived], 
+    [vw_RecordListDetails].[phisicalPath] AS [phisicalPath], 
+    [vw_RecordListDetails].[sqlType] AS [sqlType], 
+    [vw_RecordListDetails].[sqlVersion] AS [sqlVersion], 
+    [vw_RecordListDetails].[modifyBy] AS [modifyBy], 
+    [vw_RecordListDetails].[Expr5] AS [Expr5], 
+    [vw_RecordListDetails].[Expr6] AS [Expr6], 
+    [vw_RecordListDetails].[Expr7] AS [Expr7], 
+    [vw_RecordListDetails].[Expr8] AS [Expr8], 
+    [vw_RecordListDetails].[Expr9] AS [Expr9], 
+    [vw_RecordListDetails].[Expr10] AS [Expr10]
+    FROM [dbo].[vw_RecordListDetails] AS [vw_RecordListDetails]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_AllowedTypesForUser_RecordType" Association="Self.FK_AllowedTypesForUser_RecordType">
             <End Role="RecordType" EntitySet="RecordType" />
@@ -729,7 +821,6 @@ warning 6002: The table/view 'TardiRecords.dbo.vw_AllUsers' does not have a prim
           <EntitySet Name="Notes" EntityType="TardiRecordsModel.Notes" />
           <EntitySet Name="RecordList" EntityType="TardiRecordsModel.RecordList" />
           <EntitySet Name="RecordType" EntityType="TardiRecordsModel.RecordType" />
-          <EntitySet Name="vw_AllUsers" EntityType="TardiRecordsModel.vw_AllUsers" />
           <AssociationSet Name="FK_AllowedTypesForUser_RecordType" Association="TardiRecordsModel.FK_AllowedTypesForUser_RecordType">
             <End Role="RecordType" EntitySet="RecordType" />
             <End Role="AllowedTypesForUser" EntitySet="AllowedTypesForUser" />
@@ -842,6 +933,8 @@ warning 6002: The table/view 'TardiRecords.dbo.vw_AllUsers' does not have a prim
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <EntitySet Name="vw_AllUsers" EntityType="TardiRecordsModel.vw_AllUsers" />
+          <EntitySet Name="vw_RecordListDetails" EntityType="TardiRecordsModel.vw_RecordListDetails" />
         </EntityContainer>
         <EntityType Name="AllowedTypesForUser">
           <Key>
@@ -1082,19 +1175,6 @@ warning 6002: The table/view 'TardiRecords.dbo.vw_AllUsers' does not have a prim
           <NavigationProperty Name="AllowedTypesForUser" Relationship="TardiRecordsModel.FK_AllowedTypesForUser_RecordType" FromRole="RecordType" ToRole="AllowedTypesForUser" />
           <NavigationProperty Name="AspNetUsers" Relationship="TardiRecordsModel.FK_RecordType_AspNetUsers_CreatedBy" FromRole="RecordType" ToRole="AspNetUsers" />
           <NavigationProperty Name="AspNetUsers1" Relationship="TardiRecordsModel.FK_RecordType_AspNetUsers_ModifiedBy" FromRole="RecordType" ToRole="AspNetUsers" />
-        </EntityType>
-        <EntityType Name="vw_AllUsers">
-          <Key>
-            <PropertyRef Name="AspNetUserId" />
-            <PropertyRef Name="AppUserId" />
-            <PropertyRef Name="firstName" />
-            <PropertyRef Name="lastName" />
-          </Key>
-          <Property Name="AspNetUserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="AppUserId" Type="Guid" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="firstName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="lastName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_AllowedTypesForUser_RecordType">
           <End Type="TardiRecordsModel.RecordType" Role="RecordType" Multiplicity="1" />
@@ -1428,6 +1508,77 @@ warning 6002: The table/view 'TardiRecords.dbo.vw_AllUsers' does not have a prim
           <End Type="TardiRecordsModel.AspNetRoles" Role="AspNetRoles" Multiplicity="*" />
           <End Type="TardiRecordsModel.AspNetUsers" Role="AspNetUsers" Multiplicity="*" />
         </Association>
+        <EntityType Name="vw_AllUsers">
+          <Key>
+            <PropertyRef Name="AspNetUserId" />
+            <PropertyRef Name="AppUserId" />
+            <PropertyRef Name="firstName" />
+            <PropertyRef Name="lastName" />
+            <PropertyRef Name="modifyDate" />
+            <PropertyRef Name="LockoutEnabled" />
+          </Key>
+          <Property Name="AspNetUserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="AppUserId" Type="Guid" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="firstName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="lastName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="position" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="EditedBy" Type="String" MaxLength="401" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="vw_RecordListDetails">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="BackupLocationsId" />
+            <PropertyRef Name="FilesId" />
+            <PropertyRef Name="NotesId" />
+            <PropertyRef Name="Dbid" />
+            <PropertyRef Name="title" />
+            <PropertyRef Name="fullName" />
+            <PropertyRef Name="path" />
+            <PropertyRef Name="modifyDate" />
+            <PropertyRef Name="noteText" />
+            <PropertyRef Name="createdBy" />
+            <PropertyRef Name="isActive" />
+            <PropertyRef Name="isBackup" />
+            <PropertyRef Name="isArchived" />
+            <PropertyRef Name="phisicalPath" />
+            <PropertyRef Name="sqlType" />
+            <PropertyRef Name="sqlVersion" />
+            <PropertyRef Name="modifyBy" />
+            <PropertyRef Name="Expr5" />
+            <PropertyRef Name="Expr6" />
+            <PropertyRef Name="Expr7" />
+            <PropertyRef Name="Expr8" />
+            <PropertyRef Name="Expr9" />
+            <PropertyRef Name="Expr10" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="BackupLocationsId" Type="Guid" Nullable="false" />
+          <Property Name="FilesId" Type="Guid" Nullable="false" />
+          <Property Name="NotesId" Type="Guid" Nullable="false" />
+          <Property Name="Dbid" Type="Guid" Nullable="false" />
+          <Property Name="title" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="fullName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="path" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="noteText" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="createdBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="isBackup" Type="Boolean" Nullable="false" />
+          <Property Name="isArchived" Type="Boolean" Nullable="false" />
+          <Property Name="phisicalPath" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="sqlType" Type="Int32" Nullable="false" />
+          <Property Name="sqlVersion" Type="Int32" Nullable="false" />
+          <Property Name="modifyBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Expr5" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Expr6" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Expr7" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Expr8" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Expr9" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Expr10" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1630,17 +1781,6 @@ warning 6002: The table/view 'TardiRecords.dbo.vw_AllUsers' does not have a prim
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vw_AllUsers">
-            <EntityTypeMapping TypeName="TardiRecordsModel.vw_AllUsers">
-              <MappingFragment StoreEntitySet="vw_AllUsers">
-                <ScalarProperty Name="lastName" ColumnName="lastName" />
-                <ScalarProperty Name="firstName" ColumnName="firstName" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="AppUserId" ColumnName="AppUserId" />
-                <ScalarProperty Name="AspNetUserId" ColumnName="AspNetUserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <AssociationSetMapping Name="AspNetUserRoles" TypeName="TardiRecordsModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
             <EndProperty Name="AspNetUsers">
               <ScalarProperty Name="Id" ColumnName="UserId" />
@@ -1649,6 +1789,51 @@ warning 6002: The table/view 'TardiRecords.dbo.vw_AllUsers' does not have a prim
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="vw_AllUsers">
+            <EntityTypeMapping TypeName="TardiRecordsModel.vw_AllUsers">
+              <MappingFragment StoreEntitySet="vw_AllUsers">
+                <ScalarProperty Name="EditedBy" ColumnName="EditedBy" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+                <ScalarProperty Name="position" ColumnName="position" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="AppUserId" ColumnName="AppUserId" />
+                <ScalarProperty Name="AspNetUserId" ColumnName="AspNetUserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_RecordListDetails">
+            <EntityTypeMapping TypeName="TardiRecordsModel.vw_RecordListDetails">
+              <MappingFragment StoreEntitySet="vw_RecordListDetails">
+                <ScalarProperty Name="Expr10" ColumnName="Expr10" />
+                <ScalarProperty Name="Expr9" ColumnName="Expr9" />
+                <ScalarProperty Name="Expr8" ColumnName="Expr8" />
+                <ScalarProperty Name="Expr7" ColumnName="Expr7" />
+                <ScalarProperty Name="Expr6" ColumnName="Expr6" />
+                <ScalarProperty Name="Expr5" ColumnName="Expr5" />
+                <ScalarProperty Name="modifyBy" ColumnName="modifyBy" />
+                <ScalarProperty Name="sqlVersion" ColumnName="sqlVersion" />
+                <ScalarProperty Name="sqlType" ColumnName="sqlType" />
+                <ScalarProperty Name="phisicalPath" ColumnName="phisicalPath" />
+                <ScalarProperty Name="isArchived" ColumnName="isArchived" />
+                <ScalarProperty Name="isBackup" ColumnName="isBackup" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="createdBy" ColumnName="createdBy" />
+                <ScalarProperty Name="noteText" ColumnName="noteText" />
+                <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+                <ScalarProperty Name="path" ColumnName="path" />
+                <ScalarProperty Name="fullName" ColumnName="fullName" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="Dbid" ColumnName="Dbid" />
+                <ScalarProperty Name="NotesId" ColumnName="NotesId" />
+                <ScalarProperty Name="FilesId" ColumnName="FilesId" />
+                <ScalarProperty Name="BackupLocationsId" ColumnName="BackupLocationsId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

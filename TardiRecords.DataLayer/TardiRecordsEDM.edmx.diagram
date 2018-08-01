@@ -19,7 +19,6 @@
         <EntityTypeShape EntityType="TardiRecordsModel.Notes" Width="1.5" PointX="10.5" PointY="21.5" />
         <EntityTypeShape EntityType="TardiRecordsModel.RecordList" Width="1.5" PointX="5.25" PointY="8.375" />
         <EntityTypeShape EntityType="TardiRecordsModel.RecordType" Width="1.5" PointX="5.25" PointY="38.875" />
-        <EntityTypeShape EntityType="TardiRecordsModel.vw_AllUsers" Width="1.5" PointX="0.75" PointY="0.75" />
         <AssociationConnector Association="TardiRecordsModel.FK_AllowedTypesForUser_RecordType" />
         <AssociationConnector Association="TardiRecordsModel.FK_AppUsers_AspNetUsers" />
         <AssociationConnector Association="TardiRecordsModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
@@ -48,6 +47,8 @@
         <AssociationConnector Association="TardiRecordsModel.FK_Notes_Machine" />
         <AssociationConnector Association="TardiRecordsModel.FK_Notes_RecordList" />
         <AssociationConnector Association="TardiRecordsModel.AspNetUserRoles" />
+        <EntityTypeShape EntityType="TardiRecordsModel.vw_AllUsers" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="TardiRecordsModel.vw_RecordListDetails" Width="1.5" PointX="2.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
