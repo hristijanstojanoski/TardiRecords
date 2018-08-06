@@ -50,9 +50,12 @@
     <Compile Include="DataModels\RecordListDM.cs" />
     <Compile Include="DataModels\RecordTypeDM.cs" />
     <Compile Include="DataModels\RecordTypeTableViewDM.cs" />
+    <Compile Include="DataModels\RecordListTableViewDM.cs" />
     <Compile Include="DataServices\AppAdministrator\AppAdministratorDMM.cs" />
     <Compile Include="DataServices\MainUser\MainUserDMM.cs" />
     <Compile Include="DataViewModels\EnumDropdownListVM.cs" />
+    <Compile Include="DataViewModels\RecordListNgVM.cs" />
+    <Compile Include="DataViewModels\RecordListVM.cs" />
     <Compile Include="DataViewModels\RecordTypeNgVM.cs" />
     <Compile Include="DataViewModels\RecordTypeVM.cs" />
     <Compile Include="Enums\RecordSubTypeEnum.cs" />

@@ -79,25 +79,25 @@ namespace TardiRecords.Services.DataServices.MainUser
             return result;
         }
 
-        public static List<RecordTypeTableViewDM> GetAllRecordList(Guid id)
+        public static List<RecordListTableViewDM> GetAllRecordList()
         {
-            List<RecordTypeTableViewDM> result = new List<RecordTypeTableViewDM>();
+            List<RecordListTableViewDM> result = new List<RecordListTableViewDM>();
             using (TardiRecordsEntities db = new DataLayer.TardiRecordsEntities())
             {
-                var items = db.RecordType.ToList();
+                var items = db.RecordList.ToList();
                 if (items != null)
                 {
                     foreach (var i in items)
                     {
-                        RecordTypeTableViewDM li = new RecordTypeTableViewDM();
+                        RecordListTableViewDM li = new RecordListTableViewDM();
                         li.Id = i.id;
-                        li.SubtypeId = i.subType;
-                        li.SubtypeName = Helpers.EnumHelper.GetEnumDescription((Enums.RecordSubTypeEnum)i.subType);
-                        li.TypeName = i.name;
+                        li.Title = i.title;
+                        //li.SubtypeName = Helpers.EnumHelper.GetEnumDescription((Enums.RecordSubTypeEnum)i.subType);
                         li.CreatedBy = i.createdBy;
                         li.CreatedOn = i.createdDate;
-                        li.UpdatedBy = i.modifiedBy;
+                        li.UpdatedBy = i.modifyBy;
                         li.UpdatedOn = i.modifyDate;
+                        li.RecordTypeId = i.recordTypeId;
                         result.Add(li);
                     }
                 }

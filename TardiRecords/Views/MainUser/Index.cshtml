@@ -5,8 +5,12 @@
 }
 
 <h2>RecordList</h2>
-
-<div ng-controller="IndexController">
+<script src="~/AngularScripts/MainUser/Index.js"></script>
+<div ng-controller="RecordListsController">
+    <div ng-show="!initData.Success.IsSuccess" class="masterColorBackgroundRed">
+        <p><b>Error occured!</b></p>
+        <p>{{initData.Success.Message}}</p>
+    </div>
     <div>
         <div>
             <table class="dTableMainWidth">
@@ -18,15 +22,14 @@
                     <td>Date Modified</td>
                     <td></td>
                 </tr>
-                <tr class="dTableBBsimple">
+                <tr class="dTableBBsimple" ng-repeat="ap in initData.RecordsList">
                     <td><span class="dHideMe">{{ap.Id}}</span></td>
-                    <td>test1</td>
-                    <td>test2</td>
+                    <td>{{ap.Title}}</td>
                     <td>
-                        test3n
+                        <span ng-show="showFriendlyDate(ap.CreatedOn)!='Invalid date'">{{showFriendlyDate(ap.CreatedOn)}}</span>
                     </td>
                     <td>
-                       53s5
+                        <span ng-show="showFriendlyDate(ap.UpdatedOn)!='Invalid date'">{{showFriendlyDate(ap.UpdatedOn)}}</span>
                     </td>
                     <td>
                         <span title="Delete record"><i class="masterColorTextRed fa fa-times-circle"></i></span>&nbsp;&nbsp;
