@@ -205,6 +205,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AngularScripts\App.js" />
+    <Content Include="AngularScripts\AppAdministrator\AllUsers.js" />
     <Content Include="AngularScripts\AppAdministrator\Index.js" />
     <Content Include="AngularScripts\MainUser\Details.js" />
     <Content Include="AngularScripts\AppAdministrator\RecordTypes.js" />
@@ -1064,6 +1065,8 @@
     <Content Include="Views\MainUser\Index.cshtml" />
     <Content Include="Views\AppAdministrator\RecordTypes.cshtml" />
     <Content Include="Views\MainUser\Details.cshtml" />
+    <Content Include="Views\AppAdministrator\AllUsers.cshtml" />
+    <Content Include="Views\AppAdministrator\AllMachines.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

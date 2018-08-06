@@ -125,7 +125,7 @@ namespace TardiRecords.Services.DataServices.AppAdministrator
             List<RecordTypeTableViewDM> result = new List<RecordTypeTableViewDM>();
             using (TardiRecordsEntities db = new DataLayer.TardiRecordsEntities())
             {
-                var items = db.RecordType;
+                var items = db.RecordType.Where(x => x.isDeleted == false && x.isEnabled == true);
                 if (items != null)
                 {
                     foreach (var i in items)
@@ -141,7 +141,92 @@ namespace TardiRecords.Services.DataServices.AppAdministrator
                         li.UpdatedOn = i.modifyDate;
                         result.Add(li);
                     }
-                }                
+                }
+            }
+            return result;
+        }
+
+        public static List<UsersDM> GetAllUsers()
+        {
+            List<UsersDM> result = new List<UsersDM>();
+            using (TardiRecordsEntities db = new DataLayer.TardiRecordsEntities())
+            {
+                var items = db.vw_AllUsers;
+                foreach (var item in items)
+                {
+                    UsersDM u = new UsersDM();
+                    u.AppUserId = item.AppUserId;
+                    u.AspNetUserId = item.AspNetUserId;
+                    u.FirstName = item.firstName;
+                    u.LastName = item.lastName;
+                    u.Email = item.Email;
+                    u.IsLocked = item.LockoutEnabled;
+                    u.LastChangedOn = item.modifyDate;
+                    u.LastChangedBy = item.EditedBy;
+                    u.Position = item.position;
+                    result.Add(u);
+                }
+            }
+            return result;
+        }
+
+        public static ActionHandler CreateUser(string eMail, string firstName, string lastName, string position, string currentUser)
+        {
+            ActionHandler result = new ActionHandler();
+            try
+            {
+                using (TardiRecordsEntities db = new DataLayer.TardiRecordsEntities())
+                {
+                    var registeredUser = db.AspNetUsers.Where(x => x.Email == eMail).SingleOrDefault();
+                    registeredUser.LockoutEnabled = false;
+                    AppUsers u = new AppUsers();
+                    u.id = Guid.NewGuid();
+                    u.aspNetUserId = registeredUser.Id;
+                    u.createdBy = currentUser;
+                    u.createdDate = DateTime.Now;
+                    u.firstName = firstName;
+                    u.lastName = lastName;
+                    u.modifyBy = currentUser;
+                    u.modifyDate = DateTime.Now;
+                    u.position = position;
+                    db.AppUsers.Add(u);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = ex.Message;
+            }
+            return result;
+        }
+
+        public static ActionHandler LockUnlockUser(string aspNetMemberId, string loggedUser)
+        {
+            ActionHandler result = new ActionHandler();
+            try
+            {
+                using (TardiRecordsEntities db = new DataLayer.TardiRecordsEntities())
+                {
+                    var aspNetUser = db.AspNetUsers.Where(x => x.Id == aspNetMemberId).SingleOrDefault();
+                    var appUser = db.AppUsers.Where(x => x.aspNetUserId == aspNetMemberId).SingleOrDefault();
+                    if (aspNetUser.LockoutEnabled)
+                    {
+                        aspNetUser.LockoutEnabled = false;
+                    }
+                    else
+                    {
+                        aspNetUser.LockoutEnabled = true;
+                    }
+                    appUser.modifyBy = loggedUser;
+                    appUser.modifyDate = DateTime.Now;
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = ex.Message;
             }
             return result;
         }

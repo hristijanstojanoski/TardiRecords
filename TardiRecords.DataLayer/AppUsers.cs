@@ -12,11 +12,18 @@ namespace TardiRecords.DataLayer
     using System;
     using System.Collections.Generic;
     
-    public partial class C__MigrationHistory
+    public partial class AppUsers
     {
-        public string MigrationId { get; set; }
-        public string ContextKey { get; set; }
-        public byte[] Model { get; set; }
-        public string ProductVersion { get; set; }
+        public System.Guid id { get; set; }
+        public string aspNetUserId { get; set; }
+        public string firstName { get; set; }
+        public string lastName { get; set; }
+        public string position { get; set; }
+        public string createdBy { get; set; }
+        public System.DateTime createdDate { get; set; }
+        public string modifyBy { get; set; }
+        public System.DateTime modifyDate { get; set; }
+    
+        public virtual AspNetUsers AspNetUsers { get; set; }
     }
 }
